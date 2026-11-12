@@ -83,7 +83,7 @@ Inspirada en la pantalla de reglaje del coche.
 
 ## 5. La serpiente de letras
 
-- Una línea de letras pequeñas que repite el texto `angelbarreiro` (con un espacio entre repeticiones) sobre una forma. En `career` la forma es un **tramo de rally abierto** (en móvil, el mismo tramo girado) y las letras están quietas; un **punto blanco recorre el tramo de abajo (cerca) hacia arriba (lejos)** en 14 s e ilumina las letras por las que pasa (hace de progreso de la trayectoria profesional). Al llegar al final espera 1,5 s, las letras se apagan y vuelve a empezar. En `contact`, el sobre: las letras circulan por él.
+- Una línea de letras pequeñas que repite el texto `angelbarreiro` (con un espacio entre repeticiones) sobre una forma. En `career` la forma es un **tramo de rally abierto** (en móvil, el mismo tramo girado) y las letras **circulan por él en el sentido de lectura, como en el sobre, a 3 letras por segundo**; un **punto blanco recorre el tramo de abajo (cerca) hacia arriba (lejos)** en 14 s e ilumina las letras que están en la zona por la que ya ha pasado (hace de progreso de la trayectoria profesional). Al llegar al final espera 1,5 s, las letras se apagan y vuelve a empezar. En `contact`, el sobre: las letras circulan por él.
 - Las letras siguen la curva (rotadas según la tangente) y tienen algo de perspectiva/profundidad: más pequeñas y apretadas al alejarse.
 - **Cambia de forma según la opción seleccionada en el carrusel de inicio**, interpolando la posición de las letras de una forma a otra:
   - `career` → una carretera con curvas.
@@ -92,7 +92,7 @@ Inspirada en la pantalla de reglaje del coche.
 
 ### Easter egg
 - Solo con `career` seleccionado (no con `contact`). Se activa cuando el visitante **toca el punto** con el puntero (o con el dedo). No hay activación por inactividad.
-- Las letras pasan a repetir `if in doubt, flat out (colin mcrae)` y **se mueven a lo largo del tramo** mientras dura.
+- Las letras pasan a repetir `if in doubt, flat out (colin mcrae)` y siguen circulando al mismo ritmo que el nombre.
 - Dura **3,5 segundos**, aunque el puntero se aleje, y vuelve solo a `angelbarreiro`. Si el punto llega antes al final del tramo, vuelve en ese momento.
 
 ## 6. Responsive
