@@ -30,6 +30,20 @@ window.CONTENT = {
     options: ["about", "career", "contact"],
     intro: "" // short intro phrase above the carousel (one line). Empty = not shown; write it here when ready
   },
+  // About: all text is a visible placeholder until Ángel writes it. No skills or tools here.
+  about: {
+    statement: "pending: your presentation sentence",
+    bio: "pending: a short bio in two or three lines about who you are and how you work.",
+    education: [
+      { title: "pending degree", school: "pending school", years: "pending" },
+      { title: "pending course", school: "pending school", years: "pending" }
+    ],
+    credit: {
+      text: "design inspired by the menus of colin mcrae rally 2.0, a rally game from 2000.",
+      linkLabel: "about the game",
+      href: "" // TODO: link to a public reference for the game
+    }
+  },
   career: {
     // Companies in reverse chronological order. Each project is one tab of the case-study screen.
     // Images are placeholders until Ángel provides them: set `image.src` (and keep `alt`) to show one.

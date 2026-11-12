@@ -135,7 +135,7 @@
       return { name: "home", crumbs: [{ label: C.site.name }, { label: C.site.role }], up: null, links: [],
         carousel: { label: "main menu", labels: C.home.options, go: function (i) { return "#" + C.home.options[i]; } } };
     }
-    if (name === "about" && parts.length === 1) { // placeholder until the About screen is built
+    if (name === "about" && parts.length === 1) {
       return { name: "about", crumbs: [{ label: C.site.name, href: "#home" }, { label: "about" }], up: "#home", links: [] };
     }
     if (name === "contact" && parts.length === 1) {
@@ -239,7 +239,7 @@
     };
   }
 
-  var carousel = null, snake = null, stages = null, sheet = null, list = null;
+  var carousel = null, snake = null, stages = null, sheet = null, list = null, about = null;
   var lastIndex = { home: 1 }; // the home carousel starts on career (the middle option)
   var HOME_SHAPE = { about: 2, career: 0, contact: 1 }; // which snake shape each home option shows
 
@@ -251,6 +251,7 @@
     if (stages) { stages.destroy(); stages = null; }
     if (sheet) { sheet.destroy(); sheet = null; }
     if (list) { list.destroy(); list = null; }
+    if (about) { about.destroy(); about = null; }
     screenEl.textContent = "";
     screenEl.setAttribute("data-screen", route.name);
     screenEl.classList.toggle("has-carousel", !!route.carousel);
@@ -273,6 +274,7 @@
       carousel.layout();
       return;
     }
+    if (route.name === "about") { about = window.About.create(screenEl, C.about); return; }
     if (route.name === "sheet") {
       var tabs = route.company.projects.map(function (p) {
         return { label: p.name, href: "#career/" + route.company.id + "/" + p.id, current: p === route.project };
