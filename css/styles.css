@@ -84,6 +84,22 @@ a { color: inherit; text-decoration: none; }
 .c-sep { width: 1px; height: 0.76em; background: var(--line); margin: 0 0.6em; flex: none; }
 @media (prefers-reduced-motion: reduce) { .c-track { transition: none !important; } }
 
+/* Career stage select */
+.stage--career { display: grid; grid-template-columns: minmax(0, 1fr) minmax(12rem, 20rem); grid-template-rows: minmax(0, 1fr); gap: 2rem; padding-bottom: 1rem; }
+.card { align-self: center; }
+.route-box { position: relative; height: 100%; min-height: 0; }
+.route { position: absolute; inset: 0; width: 100%; height: 100%; }
+.card-thumb { width: 160px; height: 40px; border: 1px solid var(--line); margin-bottom: 1rem; }
+.card-name { font-weight: 600; font-size: 1.125rem; color: var(--text); margin-bottom: 0.5rem; }
+.card-rows { margin: 0; font-size: 0.875rem; }
+.card-row { display: flex; gap: 0.5ch; padding: 0.125rem 0; }
+.card-row dt { color: var(--text-dim); }
+.card-row dd { margin: 0; color: var(--text); }
+@media (max-width: 767px) {
+  .stage--career { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 40vh) auto; align-content: start; gap: 1rem; padding-top: 1rem; }
+  .route-box { height: 100%; }
+}
+
 /* Temporary navigation until the carousel/lists exist (steps 2+). */
 .stub-list { list-style: none; margin: 0; padding: 0; max-width: 28rem; }
 .stub-list li { border-top: 1px solid var(--line); }

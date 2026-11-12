@@ -178,26 +178,57 @@
     });
   }
 
-  var carousel = null, snake = null, lastIndex = {};
+  // Career stage select: dotted route on the left, company card on the right.
+  function createStagesView(stage, companies) {
+    stage.classList.add("stage--career");
+    var routeBox = el("div", { "class": "route-box" });
+    var card = el("div", { "class": "card", "aria-live": "polite" });
+    var thumb = el("div", { "class": "card-thumb", role: "img", "aria-label": "image coming soon" });
+    var name = el("p", { "class": "card-name" });
+    var rows = el("dl", { "class": "card-rows" });
+    card.appendChild(thumb); card.appendChild(name); card.appendChild(rows);
+    stage.appendChild(routeBox); stage.appendChild(card);
+    var route = window.Stages.create(routeBox);
+    return {
+      show: function (i) {
+        var c = companies[i];
+        name.textContent = c.name;
+        rows.textContent = "";
+        [["years", c.years], ["role", c.role], ["surfaces", c.surfaces]].forEach(function (r) {
+          var row = el("div", { "class": "card-row" });
+          row.appendChild(el("dt", {}, r[0] + ":"));
+          row.appendChild(el("dd", {}, r[1]));
+          rows.appendChild(row);
+        });
+        route.show(c.id);
+      },
+      destroy: function () { route.destroy(); }
+    };
+  }
+
+  var carousel = null, snake = null, stages = null, lastIndex = {};
 
   // Carousel screens get a central stage (graphics come in later steps) and the carousel below it.
   // Other screens still use the temporary link list until their own steps.
   function renderScreen(route) {
     carousel = null;
     if (snake) { snake.destroy(); snake = null; }
+    if (stages) { stages.destroy(); stages = null; }
     screenEl.textContent = "";
     screenEl.setAttribute("data-screen", route.name);
     screenEl.classList.toggle("has-carousel", !!route.carousel);
     if (route.carousel) {
       var cfg = route.carousel;
-      var stage = el("div", { "class": "stage", "aria-hidden": "true" });
+      var stage = el("div", { "class": "stage" });
       screenEl.appendChild(stage);
       var initial = lastIndex[route.name] || 0;
+      var onShow = function () {};
       if (route.name === "home") snake = window.Snake.create(stage, { shape: initial });
+      if (route.name === "career") { stages = createStagesView(stage, C.career.companies); onShow = stages.show; onShow(initial); }
       carousel = createCarousel(cfg.labels, {
         label: cfg.label,
         initial: initial,
-        onChange: function (i) { lastIndex[route.name] = i; if (snake) snake.setShape(i); },
+        onChange: function (i) { lastIndex[route.name] = i; if (snake) snake.setShape(i); onShow(i); },
         onConfirm: function (i) { lastIndex[route.name] = i; location.hash = cfg.go(i); }
       });
       screenEl.appendChild(carousel.el);
