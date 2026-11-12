@@ -132,11 +132,11 @@
     var parts = hash.replace(/^#\/?/, "").split("/").filter(Boolean);
     var name = parts[0] || "home";
     if (name === "home" && parts.length <= 1) {
-      return { name: "home", crumbs: [{ label: "main menu" }], up: null, links: [],
+      return { name: "home", crumbs: [{ label: C.site.name }, { label: C.site.role }], up: null, links: [],
         carousel: { label: "main menu", labels: C.home.options, go: function (i) { return "#" + C.home.options[i]; } } };
     }
     if (name === "contact" && parts.length === 1) {
-      return { name: "contact", crumbs: [{ label: "main menu", href: "#home" }, { label: "contact" }], up: "#home",
+      return { name: "contact", crumbs: [{ label: C.site.name, href: "#home" }, { label: "contact" }], up: "#home",
         help: { keys: "↑ ↓ choose, enter to open, esc to go back.", touch: "tap an option to open it." },
         links: C.contact.options.map(function (o) { return { label: o.label, href: o.href, newTab: o.newTab }; }) };
     }

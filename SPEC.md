@@ -48,7 +48,7 @@ Todo lo visual (color, tipografía, medidas, animaciones, móvil y límites) est
 ## 4. Pantallas
 
 ### 4.1 Inicio (`#home`)
-- Migas: `main menu`.
+- Migas: `angel barreiro | product designer` (texto en `data/content.js`).
 - Centro: **la serpiente de letras** (ver sección 5).
 - Carrusel: `career | contact`.
 
@@ -76,14 +76,14 @@ Inspirada en la pantalla de reglaje del coche.
 - **Texto inferior**: explicación breve de la sección (2–4 líneas).
 
 ### 4.4 Contacto (`#contact`)
-- Migas: `main menu | contact`.
+- Migas: `angel barreiro | contact`.
 - Lista vertical: `email`, `linkedin`. Sin CV.
   - email → `mailto:` (dirección pendiente)
   - linkedin → https://www.linkedin.com/in/angel-barreiro/ (pestaña nueva)
 
 ## 5. La serpiente de letras
 
-- Una línea de letras pequeñas que repite el texto `angelbarreiro` y se mueve continuamente a lo largo de una forma, con una "cabeza" de punto blanco más brillante.
+- Una línea de letras pequeñas que repite el texto `angelbarreiro` (con un espacio entre repeticiones) sobre una forma. En `career` la forma es un **tramo de rally abierto** (en móvil, el mismo tramo girado) y las letras están quietas; un **punto blanco recorre el tramo** de principio a fin en 14 s e ilumina las letras por las que pasa (hace de progreso de la trayectoria profesional). Al llegar al final espera 1,5 s, las letras se apagan y vuelve a empezar. En `contact`, el sobre: las letras circulan por él.
 - Las letras siguen la curva (rotadas según la tangente) y tienen algo de perspectiva/profundidad: más pequeñas y apretadas al alejarse.
 - **Cambia de forma según la opción seleccionada en el carrusel de inicio**, interpolando la posición de las letras de una forma a otra:
   - `career` → una carretera con curvas.
@@ -91,9 +91,9 @@ Inspirada en la pantalla de reglaje del coche.
 - Implementación sugerida: cada forma es un trazado SVG; se muestrea en N puntos y las letras se interpolan entre los puntos de la forma anterior y la nueva.
 
 ### Easter egg
-- Se activa si el visitante pasa **10 segundos sin interactuar** en inicio, o hace **4 clics seguidos** sobre la serpiente.
-- Las letras se reordenan y pasan a repetir `if in doubt, flat out`.
-- Cualquier movimiento de ratón, toque o tecla las devuelve a `angelbarreiro`.
+- Se activa si el visitante **toca el punto** con el puntero (o con el dedo) o pasa **10 segundos sin interactuar** en inicio.
+- Las letras pasan a repetir `if in doubt, flat out (colin mcrae)` y **se mueven a lo largo del tramo**.
+- Dura **al menos 7 segundos**, aunque el puntero se aleje. Pasado ese tiempo, cualquier movimiento de ratón, toque o tecla las devuelve a `angelbarreiro`.
 
 ## 6. Responsive
 

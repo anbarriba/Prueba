@@ -123,9 +123,9 @@ Reglas:
 - En la pantalla de reglaje, casilla de `0.75rem` a la derecha (cuadrado de borde 1 px). Visitada: el mismo cuadrado con una marca de verificación de 1,5 px.
 
 ### 5.3 Serpiente de letras (inicio)
-- Letras sueltas en `--text` dispuestas a lo largo de un trazado, rotadas según la tangente, con una cabeza de punto blanco de 6 px.
+- Letras sueltas en `--text` dispuestas a lo largo de un trazado, rotadas según la tangente, con una cabeza de punto blanco de 6 px. En `career` el trazado es un tramo abierto y las letras no se mueven: el punto lo recorre y las letras por delante están atenuadas (opacidad 0,4) hasta que pasa.
 - Simula profundidad: letras más pequeñas y opacidad 0,6 en los tramos "lejanos"; 14 px y opacidad 1 en los cercanos.
-- Formas: `career` → carretera con curvas; `contact` → contorno de un sobre.
+- Formas: `career` → tramo de rally abierto con curvas (girado en pantallas más altas que anchas); `contact` → contorno de un sobre. Las letras aparecen y desaparecen con un fundido en el 5 % inicial y final del tramo.
 - Ocupa la zona central, con un ancho máximo del 80 % de la pantalla.
 
 ### 5.4 Recorridos de trayectoria
@@ -149,7 +149,7 @@ Reglas:
 
 Sí:
 - **Carrusel**: desplazamiento horizontal de 250 ms, `cubic-bezier(0.2, 0.8, 0.2, 1)`, al cambiar de opción.
-- **Serpiente**: movimiento continuo a lo largo de su forma. Al cambiar de opción, interpolación de las letras a la nueva forma en 600 ms.
+- **Serpiente**: el punto recorre el tramo en 14 s, espera 1,5 s al final y las letras iluminadas se apagan en 0,6 s antes de repetir. En el sobre, las letras circulan. Al cambiar de opción, interpolación de las letras a la nueva forma en 600 ms.
 - **Recorridos**: al cambiar de empresa, el nuevo recorrido se dibuja punto a punto en 500 ms en total.
 - **Cronómetro**: actualización continua con `requestAnimationFrame`.
 - **Cambio de pantalla**: corte seco, o fundido de opacidad de 120 ms como máximo.
@@ -157,9 +157,9 @@ Sí:
 - **Casilla visitada**: aparece la marca sin animación.
 
 Easter egg:
-- Se activa tras **10 segundos sin interacción** en inicio, o con **4 clics** sobre la serpiente en menos de 2 segundos.
-- Las letras se interpolan (600 ms) para formar `if in doubt, flat out` repetido a lo largo de la misma forma.
-- Cualquier movimiento de ratón, toque o tecla las devuelve a `angelbarreiro` (600 ms) y reinicia el contador de 10 s.
+- Se activa tras **10 segundos sin interacción** en inicio, o al **tocar el punto** (puntero a menos de 18 px o toque).
+- Las letras se interpolan (600 ms) para formar `if in doubt, flat out (colin mcrae)` repetido a lo largo del tramo, y se desplazan por él (6 letras por segundo).
+- Dura **al menos 7 segundos**, aunque el puntero se aleje. Después, cualquier movimiento de ratón, toque o tecla las devuelve a `angelbarreiro` (600 ms) y reinicia el contador de 10 s.
 
 No:
 - Entradas de elementos al hacer scroll, aparición escalonada, rebotes, efectos parallax.

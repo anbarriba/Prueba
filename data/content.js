@@ -25,6 +25,7 @@ function pending(id) {
 
 window.CONTENT = {
   build: "ab portfolio build 1 (nov 2026)",
+  site: { name: "angel barreiro", role: "product designer" },
   home: { options: ["career", "contact"] },
   career: {
     // Companies in reverse chronological order. Each project is one tab of the case-study screen.
