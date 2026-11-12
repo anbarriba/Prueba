@@ -178,22 +178,26 @@
     });
   }
 
-  var carousel = null, lastIndex = {};
+  var carousel = null, snake = null, lastIndex = {};
 
   // Carousel screens get a central stage (graphics come in later steps) and the carousel below it.
   // Other screens still use the temporary link list until their own steps.
   function renderScreen(route) {
     carousel = null;
+    if (snake) { snake.destroy(); snake = null; }
     screenEl.textContent = "";
     screenEl.setAttribute("data-screen", route.name);
     screenEl.classList.toggle("has-carousel", !!route.carousel);
     if (route.carousel) {
       var cfg = route.carousel;
-      screenEl.appendChild(el("div", { "class": "stage", "aria-hidden": "true" }));
+      var stage = el("div", { "class": "stage", "aria-hidden": "true" });
+      screenEl.appendChild(stage);
+      var initial = lastIndex[route.name] || 0;
+      if (route.name === "home") snake = window.Snake.create(stage, { shape: initial });
       carousel = createCarousel(cfg.labels, {
         label: cfg.label,
-        initial: lastIndex[route.name] || 0,
-        onChange: function (i) { lastIndex[route.name] = i; },
+        initial: initial,
+        onChange: function (i) { lastIndex[route.name] = i; if (snake) snake.setShape(i); },
         onConfirm: function (i) { lastIndex[route.name] = i; location.hash = cfg.go(i); }
       });
       screenEl.appendChild(carousel.el);
