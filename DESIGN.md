@@ -158,7 +158,7 @@ Sí:
 
 Easter egg:
 - Solo con `career` seleccionado. Se activa al **tocar el punto** (puntero a menos de 18 px o toque). No hay activación por inactividad.
-- Las letras se interpolan (600 ms) para formar `if in doubt, flat out (colin mcrae)` repetido a lo largo del tramo, sin moverse de su sitio.
+- Las letras se interpolan (600 ms) para formar `if in doubt, flat out (colin mcrae)` repetido a lo largo del tramo, y se desplazan por él (6 letras por segundo). Al terminar, las letras se recolocan suavemente en su sitio. Con `prefers-reduced-motion` no se desplazan.
 - Dura **3,5 segundos**, aunque el puntero se aleje. Después vuelve sola a `angelbarreiro` (600 ms). Si el punto llega antes al final del tramo, vuelve en ese momento.
 
 No:

@@ -92,7 +92,7 @@ Inspirada en la pantalla de reglaje del coche.
 
 ### Easter egg
 - Solo con `career` seleccionado (no con `contact`). Se activa cuando el visitante **toca el punto** con el puntero (o con el dedo). No hay activación por inactividad.
-- Las letras pasan a repetir `if in doubt, flat out (colin mcrae)`, quietas como el nombre.
+- Las letras pasan a repetir `if in doubt, flat out (colin mcrae)` y **se mueven a lo largo del tramo** mientras dura.
 - Dura **3,5 segundos**, aunque el puntero se aleje, y vuelve solo a `angelbarreiro`. Si el punto llega antes al final del tramo, vuelve en ese momento.
 
 ## 6. Responsive

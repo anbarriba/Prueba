@@ -14,6 +14,7 @@
   var UNLIT = 0.4;           // brightness of letters the dot has not reached
   var FADE = 0.05;           // fraction of the stage over which letters fade in/out at its ends
   var LAP_SECONDS = 40;      // envelope: time for a letter to go round
+  var EGG_FLOW = 6;          // easter egg: letters per second the phrase moves along the stage
   var EGG_MS = 3500;         // the easter egg shows the phrase this long, whatever the pointer does (less if the dot reaches the finish)
   var TOUCH_PX = 18;         // pointer distance to the dot that counts as touching it
 
@@ -92,6 +93,7 @@
     var shapeTarget = opts.shape || 0, shapeW = shapeTarget;    // 0 = stage, 1 = envelope
     var eggTarget = 0, eggW = 0, eggUntil = 0;
     var lap = 0;                                                // envelope flow (0..1)
+    var flow = 0;                                               // easter egg: how far the letters have slid along the stage (in letters)
     var prog = 0, hold = 0, lit = 1;                            // the dot: position 0..1 along the stage, wait, lit-letters level
     var raf = 0, last = 0, dirty = true, dead = false;
     var head = { x: -99, y: -99 }, A = {}, B = {};
@@ -113,10 +115,10 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
       if (!tables.length) return;
-      var m = smooth(shapeW), e = smooth(eggW), reachedFrom = 1 - prog; // the dot runs from the end of the path (bottom) back to its start
+      var m = smooth(shapeW), e = smooth(eggW), shift = Math.floor(flow), frac = flow - shift, reachedFrom = 1 - prog; // the dot runs from the end of the path (bottom) back to its start
       ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#fff";
       for (var j = 0; j < letters; j++) {
-        var va = j / letters;
+        var va = (j - frac) / letters;
         at(tables[0], va, A); at(tables[1], j / letters + lap, B);
         var reached = Math.max(va >= reachedFrom ? lit : 0, e);
         var alphaA = A.alpha * (UNLIT + (1 - UNLIT) * reached);
@@ -125,8 +127,8 @@
         ctx.save();
         ctx.translate(x, y); ctx.rotate(ang);
         ctx.font = "400 " + size.toFixed(1) + "px Inter, 'Helvetica Neue', Arial, sans-serif";
-        if (e < 1) { ctx.globalAlpha = alpha * (1 - e); ctx.fillText(WORD.charAt(j % WORD.length), 0, 0); }
-        if (e > 0) { ctx.globalAlpha = alpha * e; ctx.fillText(PHRASE.charAt(j % PHRASE.length), 0, 0); }
+        if (e < 1) { ctx.globalAlpha = alpha * (1 - e); ctx.fillText(WORD.charAt(mod(j - shift, WORD.length)), 0, 0); }
+        if (e > 0) { ctx.globalAlpha = alpha * e; ctx.fillText(PHRASE.charAt(mod(j - shift, PHRASE.length)), 0, 0); }
         ctx.restore();
       }
       // the dot: runs the stage; on the envelope it sits at the seam of the letters
@@ -172,6 +174,11 @@
         // the dot runs the stage, waits at the finish, then the lit letters fade and it starts again
         if (prog < 1) { prog = Math.min(1, prog + dt / STAGE_SECONDS); if (prog === 1) { hold = HOLD_SECONDS + RESET_SECONDS; setEgg(false); } } // the dot reached the finish: the name comes back
         else { hold -= dt; if (hold < RESET_SECONDS) lit = Math.max(0, hold / RESET_SECONDS); if (hold <= 0) { prog = 0; lit = 1; } }
+      }
+      if (!reduce.matches && !still) {
+        // easter egg: the phrase moves along the stage; when it ends the letters settle back onto their places
+        if (eggTarget) flow += EGG_FLOW * dt;
+        else if (flow !== Math.round(flow)) flow += (Math.round(flow) - flow) * Math.min(1, dt * 8);
       }
       if (eggTarget && now >= eggUntil) setEgg(false);
       if (moving || dirty) { draw(); dirty = false; }
