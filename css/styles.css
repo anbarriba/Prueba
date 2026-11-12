@@ -1,0 +1,74 @@
+@font-face { font-family: "Inter"; font-weight: 300; font-style: normal; font-display: swap; src: url("../assets/fonts/inter-300.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 400; font-style: normal; font-display: swap; src: url("../assets/fonts/inter-400.woff2") format("woff2"); }
+@font-face { font-family: "Inter"; font-weight: 600; font-style: normal; font-display: swap; src: url("../assets/fonts/inter-600.woff2") format("woff2"); }
+@font-face { font-family: "Doto"; font-weight: 500; font-style: normal; font-display: swap; src: url("../assets/fonts/doto-500.woff2") format("woff2"); }
+@font-face { font-family: "Doto"; font-weight: 700; font-style: normal; font-display: swap; src: url("../assets/fonts/doto-700.woff2") format("woff2"); }
+
+:root {
+  color-scheme: light;
+  --bg: #9DB4AC;
+  --text: #FFFFFF;
+  --text-dim: #D3DDDA;
+  --line: rgba(255, 255, 255, 0.6);
+  --ink: #1F3A33;
+  --panel: #E7EBC6;
+  --box: #CED7DE;
+  --start: #3FBF5F;
+  --finish: #D9433A;
+  --font-sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-dots: "Doto", "Inter", monospace;
+  --gutter: clamp(1rem, 3vw, 2.5rem);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  text-transform: lowercase;
+  overflow: hidden;
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+
+.frame {
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  height: 100dvh;
+  padding:
+    calc(clamp(1rem, 3vh, 2rem) + env(safe-area-inset-top))
+    calc(var(--gutter) + env(safe-area-inset-right))
+    env(safe-area-inset-bottom)
+    calc(var(--gutter) + env(safe-area-inset-left));
+}
+
+.top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+
+.crumbs { display: flex; align-items: center; font-weight: 600; font-size: 0.875rem; color: var(--text-dim); min-width: 0; }
+.crumbs a, .crumbs span { white-space: nowrap; }
+.crumbs a:hover { color: var(--text); }
+.crumbs [aria-current] { color: var(--text); }
+.crumbs .sep { width: 1px; height: 1em; background: var(--line); margin: 0 0.5rem; flex: none; }
+
+.timer { white-space: nowrap; }
+.timer-label { font-weight: 600; font-size: 0.875rem; color: var(--text); }
+.timer-value { font-family: var(--font-dots); font-weight: 700; font-size: 1rem; color: var(--text-dim); font-variant-numeric: tabular-nums; }
+
+.screen { min-height: 0; overflow: auto; outline: none; display: flex; flex-direction: column; justify-content: center; }
+
+/* Temporary navigation until the carousel/lists exist (steps 2+). */
+.stub-list { list-style: none; margin: 0; padding: 0; max-width: 28rem; }
+.stub-list li { border-top: 1px solid var(--line); }
+.stub-list li:last-child { border-bottom: 1px solid var(--line); }
+.stub-list a { display: block; padding: 0.75rem 0; font-size: 1rem; color: var(--text-dim); }
+.stub-list a:hover { color: var(--text); }
+
+.help { text-align: center; font-weight: 600; font-size: 0.8125rem; color: var(--text-dim); padding: 0.75rem 0; }
+.build { font-size: 0.6875rem; color: var(--text-dim); padding-bottom: 0.75rem; }
+
+@media (max-width: 767px) {
+  .crumbs .crumb:nth-last-child(n+4), .crumbs .sep:nth-last-child(n+4) { display: none; } /* keep last two crumbs */
+}
