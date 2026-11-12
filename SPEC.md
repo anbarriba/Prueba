@@ -91,9 +91,9 @@ Inspirada en la pantalla de reglaje del coche.
 - Implementación sugerida: cada forma es un trazado SVG; se muestrea en N puntos y las letras se interpolan entre los puntos de la forma anterior y la nueva.
 
 ### Easter egg
-- Solo con `career` seleccionado (no con `contact`). Se activa si el visitante **toca el punto** con el puntero (o con el dedo) o pasa **4,5 segundos sin interactuar** en inicio.
+- Solo con `career` seleccionado (no con `contact`). Se activa cuando el visitante **toca el punto** con el puntero (o con el dedo). No hay activación por inactividad.
 - Las letras pasan a repetir `if in doubt, flat out (colin mcrae)`, quietas como el nombre.
-- Dura **al menos 7 segundos**, aunque el puntero se aleje. Pasado ese tiempo, cualquier movimiento de ratón, toque o tecla las devuelve a `angelbarreiro`.
+- Dura **3,5 segundos**, aunque el puntero se aleje, y vuelve solo a `angelbarreiro`. Si el punto llega antes al final del tramo, vuelve en ese momento.
 
 ## 6. Responsive
 

@@ -157,9 +157,9 @@ Sí:
 - **Casilla visitada**: aparece la marca sin animación.
 
 Easter egg:
-- Solo con `career` seleccionado. Se activa tras **4,5 segundos sin interacción** en inicio, o al **tocar el punto** (puntero a menos de 18 px o toque).
+- Solo con `career` seleccionado. Se activa al **tocar el punto** (puntero a menos de 18 px o toque). No hay activación por inactividad.
 - Las letras se interpolan (600 ms) para formar `if in doubt, flat out (colin mcrae)` repetido a lo largo del tramo, sin moverse de su sitio.
-- Dura **al menos 7 segundos**, aunque el puntero se aleje. Después, cualquier movimiento de ratón, toque o tecla las devuelve a `angelbarreiro` (600 ms) y reinicia el contador de 4,5 s.
+- Dura **3,5 segundos**, aunque el puntero se aleje. Después vuelve sola a `angelbarreiro` (600 ms). Si el punto llega antes al final del tramo, vuelve en ese momento.
 
 No:
 - Entradas de elementos al hacer scroll, aparición escalonada, rebotes, efectos parallax.

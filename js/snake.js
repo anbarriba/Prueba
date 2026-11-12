@@ -1,6 +1,6 @@
 // Letter snake for the home screen. On "career" the letters sit along an open rally stage and a dot
 // runs the stage from the bottom (near) to the top (far), lighting the letters it passes (a career progress bar).
-// On "contact" they form an envelope. Touching the dot (career only) starts the easter egg: a phrase instead of the name.
+// On "contact" they form an envelope. Touching the dot (career only) shows a phrase instead of the name for a few seconds.
 (function () {
   "use strict";
 
@@ -14,8 +14,7 @@
   var UNLIT = 0.4;           // brightness of letters the dot has not reached
   var FADE = 0.05;           // fraction of the stage over which letters fade in/out at its ends
   var LAP_SECONDS = 40;      // envelope: time for a letter to go round
-  var EGG_MIN_MS = 7000;     // the easter egg stays at least this long, whatever the pointer does
-  var IDLE_MS = 4500;        // ...or it starts after this long without interaction
+  var EGG_MS = 3500;         // the easter egg shows the phrase this long, whatever the pointer does (less if the dot reaches the finish)
   var TOUCH_PX = 18;         // pointer distance to the dot that counts as touching it
 
   // Outlines in an arbitrary box. The stage is open; the second path is the same stage turned for tall screens.
@@ -91,10 +90,10 @@
     var tables = [], letters = 0, w = 0, h = 0, dpr = 1;
     var still = !!opts.still;                                   // contact: no movement, no easter egg
     var shapeTarget = opts.shape || 0, shapeW = shapeTarget;    // 0 = stage, 1 = envelope
-    var eggTarget = 0, eggW = 0, eggUntil = 0, revertPending = false;
+    var eggTarget = 0, eggW = 0, eggUntil = 0;
     var lap = 0;                                                // envelope flow (0..1)
     var prog = 0, hold = 0, lit = 1;                            // the dot: position 0..1 along the stage, wait, lit-letters level
-    var lastActivity = performance.now(), raf = 0, last = 0, dirty = true, dead = false;
+    var raf = 0, last = 0, dirty = true, dead = false;
     var head = { x: -99, y: -99 }, A = {}, B = {};
 
     function layout() {
@@ -144,19 +143,10 @@
     function setEgg(on) {
       if (eggTarget === (on ? 1 : 0)) return;
       eggTarget = on ? 1 : 0;
-      revertPending = false;
       canvas.setAttribute("data-egg", on ? "on" : "off");
-      if (on) eggUntil = performance.now() + EGG_MIN_MS;
+      if (on) eggUntil = performance.now() + EGG_MS;
       if (reduce.matches) eggW = eggTarget;
       dirty = true;
-    }
-
-    // Any interaction brings the name back, but not before the easter egg has been up for EGG_MIN_MS.
-    function activity() {
-      var now = performance.now();
-      lastActivity = now;
-      if (!eggTarget) return;
-      if (now < eggUntil) revertPending = true; else setEgg(false);
     }
 
     function touchesDot(e) {
@@ -165,8 +155,7 @@
     }
 
     function onPointer(e) {
-      if (canEgg() && !eggTarget && touchesDot(e)) { lastActivity = performance.now(); setEgg(true); return; }
-      activity();
+      if (canEgg() && !eggTarget && touchesDot(e)) setEgg(true);
     }
 
     function frame(now) {
@@ -181,11 +170,10 @@
         if (eggW !== eggTarget) eggW = eggW < eggTarget ? Math.min(eggTarget, eggW + step) : Math.max(eggTarget, eggW - step);
         lap = (lap + dt / LAP_SECONDS) % 1;
         // the dot runs the stage, waits at the finish, then the lit letters fade and it starts again
-        if (prog < 1) { prog = Math.min(1, prog + dt / STAGE_SECONDS); if (prog === 1) hold = HOLD_SECONDS + RESET_SECONDS; }
+        if (prog < 1) { prog = Math.min(1, prog + dt / STAGE_SECONDS); if (prog === 1) { hold = HOLD_SECONDS + RESET_SECONDS; setEgg(false); } } // the dot reached the finish: the name comes back
         else { hold -= dt; if (hold < RESET_SECONDS) lit = Math.max(0, hold / RESET_SECONDS); if (hold <= 0) { prog = 0; lit = 1; } }
       }
-      if (eggTarget && revertPending && now >= eggUntil) setEgg(false);
-      if (canEgg() && !eggTarget && now - lastActivity > IDLE_MS) setEgg(true);
+      if (eggTarget && now >= eggUntil) setEgg(false);
       if (moving || dirty) { draw(); dirty = false; }
       raf = requestAnimationFrame(frame);
     }
@@ -193,7 +181,6 @@
     var ro = window.ResizeObserver ? new ResizeObserver(layout) : null;
     if (ro) ro.observe(stage); else window.addEventListener("resize", layout);
     ["pointermove", "pointerdown"].forEach(function (t) { window.addEventListener(t, onPointer, { passive: true }); });
-    ["keydown", "touchstart", "wheel"].forEach(function (t) { window.addEventListener(t, activity, { passive: true }); });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { dirty = true; });
 
     layout();
@@ -205,7 +192,6 @@
         dead = true; cancelAnimationFrame(raf);
         if (ro) ro.disconnect(); else window.removeEventListener("resize", layout);
         ["pointermove", "pointerdown"].forEach(function (t) { window.removeEventListener(t, onPointer); });
-        ["keydown", "touchstart", "wheel"].forEach(function (t) { window.removeEventListener(t, activity); });
         if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
       }
     };
