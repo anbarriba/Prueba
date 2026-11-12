@@ -135,6 +135,9 @@
       return { name: "home", crumbs: [{ label: C.site.name }, { label: C.site.role }], up: null, links: [],
         carousel: { label: "main menu", labels: C.home.options, go: function (i) { return "#" + C.home.options[i]; } } };
     }
+    if (name === "about" && parts.length === 1) { // placeholder until the About screen is built
+      return { name: "about", crumbs: [{ label: C.site.name, href: "#home" }, { label: "about" }], up: "#home", links: [] };
+    }
     if (name === "contact" && parts.length === 1) {
       return { name: "contact", crumbs: [{ label: C.site.name, href: "#home" }, { label: "contact" }], up: "#home",
         help: { keys: "↑ ↓ choose, enter to open, esc to go back.", touch: "tap an option to open it." },
@@ -236,7 +239,9 @@
     };
   }
 
-  var carousel = null, snake = null, stages = null, sheet = null, list = null, lastIndex = {};
+  var carousel = null, snake = null, stages = null, sheet = null, list = null;
+  var lastIndex = { home: 1 }; // the home carousel starts on career (the middle option)
+  var HOME_SHAPE = { about: 2, career: 0, contact: 1 }; // which snake shape each home option shows
 
   // Carousel screens get a central stage (graphics come in later steps) and the carousel below it.
   // Other screens still use the temporary link list until their own steps.
@@ -255,14 +260,15 @@
       screenEl.appendChild(stage);
       var initial = lastIndex[route.name] || 0;
       var onShow = function () {};
-      if (route.name === "home") snake = window.Snake.create(stage, { shape: initial });
+      if (route.name === "home") snake = window.Snake.create(stage, { shape: HOME_SHAPE[cfg.labels[initial]] });
       if (route.name === "career") { stages = createStagesView(stage, C.career.companies); onShow = stages.show; onShow(initial); }
       carousel = createCarousel(cfg.labels, {
         label: cfg.label,
         initial: initial,
-        onChange: function (i) { lastIndex[route.name] = i; if (snake) snake.setShape(i); onShow(i); },
+        onChange: function (i) { lastIndex[route.name] = i; if (snake) snake.setShape(HOME_SHAPE[cfg.labels[i]]); onShow(i); },
         onConfirm: function (i) { lastIndex[route.name] = i; location.hash = cfg.go(i); }
       });
+      if (route.name === "home") screenEl.appendChild(el("p", { "class": "intro" }, C.home.intro));
       screenEl.appendChild(carousel.el);
       carousel.layout();
       return;

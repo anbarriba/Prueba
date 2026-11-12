@@ -26,7 +26,10 @@ function pending(id) {
 window.CONTENT = {
   build: "ab portfolio build 1 (nov 2026)",
   site: { name: "angel barreiro", role: "product designer" },
-  home: { options: ["career", "contact"] },
+  home: {
+    options: ["about", "career", "contact"],
+    intro: "product designer making complex tools feel simple." // provisional text: Ángel will rewrite it
+  },
   career: {
     // Companies in reverse chronological order. Each project is one tab of the case-study screen.
     // Images are placeholders until Ángel provides them: set `image.src` (and keep `alt`) to show one.
