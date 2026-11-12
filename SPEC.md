@@ -78,12 +78,12 @@ Inspirada en la pantalla de reglaje del coche.
 ### 4.4 Contacto (`#contact`)
 - Migas: `angel barreiro | contact`.
 - Lista vertical: `email`, `linkedin`. Sin CV.
-  - email → `mailto:` (dirección pendiente)
+  - email → `mailto:angelbarreiroribadulla@gmail.com`
   - linkedin → https://www.linkedin.com/in/angel-barreiro/ (pestaña nueva)
 
 ## 5. La serpiente de letras
 
-- Una línea de letras pequeñas que repite el texto `angelbarreiro` (con un espacio entre repeticiones) sobre una forma. En `career` la forma es un **tramo de rally abierto** (en móvil, el mismo tramo girado) y las letras están quietas; un **punto blanco recorre el tramo** de principio a fin en 14 s e ilumina las letras por las que pasa (hace de progreso de la trayectoria profesional). Al llegar al final espera 1,5 s, las letras se apagan y vuelve a empezar. En `contact`, el sobre: las letras circulan por él.
+- Una línea de letras pequeñas que repite el texto `angelbarreiro` (con un espacio entre repeticiones) sobre una forma. En `career` la forma es un **tramo de rally abierto** (en móvil, el mismo tramo girado) y las letras están quietas; un **punto blanco recorre el tramo de abajo (cerca) hacia arriba (lejos)** en 14 s e ilumina las letras por las que pasa (hace de progreso de la trayectoria profesional). Al llegar al final espera 1,5 s, las letras se apagan y vuelve a empezar. En `contact`, el sobre: las letras circulan por él.
 - Las letras siguen la curva (rotadas según la tangente) y tienen algo de perspectiva/profundidad: más pequeñas y apretadas al alejarse.
 - **Cambia de forma según la opción seleccionada en el carrusel de inicio**, interpolando la posición de las letras de una forma a otra:
   - `career` → una carretera con curvas.
@@ -91,8 +91,8 @@ Inspirada en la pantalla de reglaje del coche.
 - Implementación sugerida: cada forma es un trazado SVG; se muestrea en N puntos y las letras se interpolan entre los puntos de la forma anterior y la nueva.
 
 ### Easter egg
-- Se activa si el visitante **toca el punto** con el puntero (o con el dedo) o pasa **10 segundos sin interactuar** en inicio.
-- Las letras pasan a repetir `if in doubt, flat out (colin mcrae)` y **se mueven a lo largo del tramo**.
+- Solo con `career` seleccionado (no con `contact`). Se activa si el visitante **toca el punto** con el puntero (o con el dedo) o pasa **4,5 segundos sin interactuar** en inicio.
+- Las letras pasan a repetir `if in doubt, flat out (colin mcrae)`, quietas como el nombre.
 - Dura **al menos 7 segundos**, aunque el puntero se aleje. Pasado ese tiempo, cualquier movimiento de ratón, toque o tecla las devuelve a `angelbarreiro`.
 
 ## 6. Responsive

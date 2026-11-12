@@ -81,7 +81,7 @@ window.CONTENT = {
   },
   contact: {
     options: [
-      { id: "email", label: "email", href: "mailto:pending@example.com" }, // TODO: real address pending
+      { id: "email", label: "email", href: "mailto:angelbarreiroribadulla@gmail.com" },
       { id: "linkedin", label: "linkedin", href: "https://www.linkedin.com/in/angel-barreiro/", newTab: true }
     ]
   },
