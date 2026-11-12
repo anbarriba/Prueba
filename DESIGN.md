@@ -123,7 +123,7 @@ Reglas:
 - En la pantalla de reglaje, casilla de `0.75rem` a la derecha (cuadrado de borde 1 px). Visitada: el mismo cuadrado con una marca de verificación de 1,5 px.
 
 ### 5.3 Serpiente de letras (inicio)
-- Letras sueltas en `--text` dispuestas a lo largo de un trazado, rotadas según la tangente, con una cabeza de punto blanco de 6 px. En `career` el trazado es un tramo abierto y las letras circulan por él en el sentido de lectura (como en el sobre) a 3 letras por segundo: el punto lo recorre y las letras de la zona que aún no ha recorrido están atenuadas (opacidad 0,4).
+- Letras sueltas en `--text` dispuestas a lo largo de un trazado, rotadas según la tangente (en el tramo de rally, los tramos hacia la izquierda se dibujan con las letras en pie y el orden invertido, y el texto se refleja en cada curva cerrada, con un fundido), con una cabeza de punto blanco de 6 px. En `career` el trazado es un tramo abierto y las letras circulan por él en el sentido de lectura (como en el sobre) a 5 letras por segundo: el punto lo recorre y las letras de la zona que aún no ha recorrido están atenuadas (opacidad 0,4).
 - Simula profundidad: letras más pequeñas y opacidad 0,6 en los tramos "lejanos"; 14 px y opacidad 1 en los cercanos.
 - Formas: `career` → tramo de rally abierto con curvas (girado en pantallas más altas que anchas); `contact` → contorno de un sobre. Las letras aparecen y desaparecen con un fundido en el 5 % inicial y final del tramo.
 - Ocupa la zona central, con un ancho máximo del 80 % de la pantalla.
@@ -149,7 +149,7 @@ Reglas:
 
 Sí:
 - **Carrusel**: desplazamiento horizontal de 250 ms, `cubic-bezier(0.2, 0.8, 0.2, 1)`, al cambiar de opción.
-- **Serpiente**: las letras circulan por el tramo en el sentido de lectura (3 por segundo); el punto recorre el tramo de abajo hacia arriba en 14 s, espera 1,5 s al final y las letras iluminadas se apagan en 0,6 s antes de repetir. En el sobre, las letras circulan. Al cambiar de opción, interpolación de las letras a la nueva forma en 600 ms.
+- **Serpiente**: las letras circulan por el tramo en el sentido de lectura (5 por segundo, igual que en el sobre); el punto recorre el tramo de abajo hacia arriba en 14 s, espera 1,5 s al final y las letras iluminadas se apagan en 0,6 s antes de repetir. En el sobre, las letras circulan. Al cambiar de opción, interpolación de las letras a la nueva forma en 600 ms.
 - **Recorridos**: al cambiar de empresa, el nuevo recorrido se dibuja punto a punto en 500 ms en total.
 - **Cronómetro**: actualización continua con `requestAnimationFrame`.
 - **Cambio de pantalla**: corte seco, o fundido de opacidad de 120 ms como máximo.

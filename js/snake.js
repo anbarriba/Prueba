@@ -13,8 +13,7 @@
   var RESET_SECONDS = 0.6;   // ...and the lit letters fade out before it starts again
   var UNLIT = 0.4;           // brightness of letters the dot has not reached
   var FADE = 0.05;           // fraction of the stage over which letters fade in/out at its ends
-  var LAP_SECONDS = 40;      // envelope: time for a letter to go round
-  var FLOW = 3;              // letters per second the text (name or phrase) moves along the stage, in reading direction
+  var FLOW = 5;              // letters per second the text (name or phrase) moves, on the stage and around the envelope
   var EGG_MS = 3500;         // the easter egg shows the phrase this long, whatever the pointer does (less if the dot reaches the finish)
   var TOUCH_PX = 18;         // pointer distance to the dot that counts as touching it
 
@@ -88,7 +87,7 @@
     stage.appendChild(canvas);
     var ctx = canvas.getContext("2d");
     var wide = sampleShape(STAGE_WIDE), tall = sampleShape(STAGE_TALL), envelope = sampleShape(ENVELOPE);
-    var tables = [], letters = 0, w = 0, h = 0, dpr = 1;
+    var tables = [], zones = [], letters = 0, w = 0, h = 0, dpr = 1;
     var still = !!opts.still;                                   // contact: no movement, no easter egg
     var shapeTarget = opts.shape || 0, shapeW = shapeTarget;    // 0 = stage, 1 = envelope
     var eggTarget = 0, eggW = 0, eggUntil = 0;
@@ -108,28 +107,77 @@
       tables = [bake(h > w ? tall : wide, w, h, 0.96, 0.98, minPx, maxPx), bake(envelope, w, h, mobile ? 0.9 : 0.8, 0.9, minPx, maxPx)];
       var total = (tables[0].total + tables[1].total) / 2;
       letters = Math.max(1, Math.round(total / 0.85 / WORD.length)) * WORD.length; // whole words, so the loop has no seam
+      zones = computeZones(tables[0], tables[0].total / letters);
       dirty = true;
+    }
+
+    // Zones of the stage where the text runs rightwards (+1) or leftwards (-1). Leftwards stretches are drawn upright
+    // and read in the opposite order along the path, so the name reads correctly everywhere; at each turn the text
+    // is mirrored (letters appear or vanish there). Short stretches are merged into their neighbours.
+    function computeZones(t, sp) {
+      var n = t.n, runs = [], k, s, cur = null;
+      for (k = 0; k < n; k++) {
+        var dx = t.px[Math.min(n - 1, k + 4)] - t.px[Math.max(0, k - 3)];
+        s = dx < 0 ? -1 : 1;
+        if (cur && cur.s === s) cur.u1 = t.u[k]; else { cur = { s: s, u0: t.u[k], u1: t.u[k] }; runs.push(cur); }
+      }
+      runs[runs.length - 1].u1 = t.u[n - 1];
+      for (k = 1; k < runs.length; k++) runs[k].u0 = runs[k - 1].u1;
+      var MIN = 10 * sp, changed = true;
+      while (changed && runs.length > 1) {
+        changed = false;
+        for (k = 0; k < runs.length; k++) {
+          if (runs[k].u1 - runs[k].u0 >= MIN) continue;
+          var prev = runs[k - 1], next = runs[k + 1], into = !next || (prev && prev.u1 - prev.u0 >= next.u1 - next.u0) ? prev : next;
+          into.u0 = Math.min(into.u0, runs[k].u0); into.u1 = Math.max(into.u1, runs[k].u1);
+          runs.splice(k, 1);
+          for (var q = 1; q < runs.length; q++) if (runs[q].s === runs[q - 1].s) { runs[q - 1].u1 = runs[q].u1; runs.splice(q, 1); q--; }
+          changed = true; break;
+        }
+      }
+      var tt = 0;
+      runs.forEach(function (z) { z.t0 = tt; tt += z.s * (z.u1 - z.u0) / sp; z.t1 = tt; });
+      return runs;
     }
 
     function draw() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
       if (!tables.length) return;
-      var m = smooth(shapeW), e = smooth(eggW), shift = Math.floor(flow), frac = flow - shift, reachedFrom = 1 - prog; // the dot runs from the end of the path (bottom) back to its start
+      var m = smooth(shapeW), e = smooth(eggW), reachedFrom = 1 - prog;
+      var total = tables[0].total, sp = total / letters, list = [];
+      zones.forEach(function (z) {
+        var lo = Math.min(z.t0, z.t1), hi = Math.max(z.t0, z.t1);
+        for (var n = Math.ceil(lo - flow); n <= Math.floor(hi - flow); n++) {
+          var u = z.u0 + z.s * (n + flow - z.t0) * sp, v = Math.min(Math.max(u / total, 0), 0.99999);
+          at(tables[0], v, A);
+          var edge = Math.max(0, Math.min(1, Math.min(u - z.u0, z.u1 - u) / (2.5 * sp))); // fade near the turns
+          var reached = Math.max(v >= reachedFrom ? lit : 0, e);
+          list.push({ x: A.x, y: A.y, size: A.size, alpha: A.alpha * edge * (UNLIT + (1 - UNLIT) * reached),
+                      ang: Math.atan2(A.dy, A.dx) + (z.s < 0 ? Math.PI : 0), dx: A.dx, dy: A.dy, n: n, v: v });
+        }
+      });
+      list.sort(function (p, q) { return p.v - q.v; }); // along the stage, so the morph to the envelope keeps neighbours together
       ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = "#fff";
-      for (var j = 0; j < letters; j++) {
-        var va = (j + frac) / letters; // letter at slot j shows character j - shift, so each character moves forward as flow grows
-        at(tables[0], va, A); at(tables[1], j / letters + lap, B);
-        var reached = Math.max(va >= reachedFrom ? lit : 0, e);
-        var alphaA = A.alpha * (UNLIT + (1 - UNLIT) * reached);
-        var x = lerp(A.x, B.x, m), y = lerp(A.y, B.y, m), size = lerp(A.size, B.size, m), alpha = lerp(alphaA, B.alpha, m);
-        var ang = Math.atan2(lerp(A.dy, B.dy, m), lerp(A.dx, B.dx, m));
+      function put(x, y, size, alpha, ang, n) {
         ctx.save();
         ctx.translate(x, y); ctx.rotate(ang);
         ctx.font = "400 " + size.toFixed(1) + "px Inter, 'Helvetica Neue', Arial, sans-serif";
-        if (e < 1) { ctx.globalAlpha = alpha * (1 - e); ctx.fillText(WORD.charAt(mod(j - shift, WORD.length)), 0, 0); }
-        if (e > 0) { ctx.globalAlpha = alpha * e; ctx.fillText(PHRASE.charAt(mod(j - shift, PHRASE.length)), 0, 0); }
+        if (e < 1) { ctx.globalAlpha = alpha * (1 - e); ctx.fillText(WORD.charAt(mod(n, WORD.length)), 0, 0); }
+        if (e > 0) { ctx.globalAlpha = alpha * e; ctx.fillText(PHRASE.charAt(mod(n, PHRASE.length)), 0, 0); }
         ctx.restore();
+      }
+      var count = Math.max(list.length, letters);
+      for (var i = 0; i < count; i++) {
+        at(tables[1], (i % letters) / letters + lap, B);
+        var a = list[i];
+        if (!a) { if (m > 0) put(B.x, B.y, B.size, B.alpha * m, Math.atan2(B.dy, B.dx), i); continue; }
+        if (i >= letters) { if (m < 1) put(a.x, a.y, a.size, a.alpha * (1 - m), a.ang, a.n); continue; }
+        var ang = m > 0 ? Math.atan2(lerp(a.dy, B.dy, m), lerp(a.dx, B.dx, m)) + (m < 1 ? a.ang - Math.atan2(a.dy, a.dx) : 0) : a.ang;
+        var x = lerp(a.x, B.x, m), y = lerp(a.y, B.y, m), size = lerp(a.size, B.size, m), alpha = lerp(a.alpha, B.alpha, m);
+        // the characters follow the stage's text order until the envelope takes over, then its own order
+        if (m < 1) put(x, y, size, alpha * (1 - m), ang, a.n);
+        if (m > 0) put(x, y, size, alpha * m, ang, i);
       }
       // the dot: runs the stage; on the envelope it sits at the seam of the letters
       at(tables[0], Math.min(Math.max(reachedFrom, 0.0001), 0.9999), A); at(tables[1], lap - 0.5 / letters, B);
@@ -170,7 +218,7 @@
         moving = true;
         if (shapeW !== shapeTarget) shapeW = shapeW < shapeTarget ? Math.min(shapeTarget, shapeW + step) : Math.max(shapeTarget, shapeW - step);
         if (eggW !== eggTarget) eggW = eggW < eggTarget ? Math.min(eggTarget, eggW + step) : Math.max(eggTarget, eggW - step);
-        lap = (lap + dt / LAP_SECONDS) % 1;
+        lap = (lap + dt * FLOW / letters) % 1; // envelope: same speed in letters per second as the stage
         // the dot runs the stage, waits at the finish, then the lit letters fade and it starts again
         if (prog < 1) { prog = Math.min(1, prog + dt / STAGE_SECONDS); if (prog === 1) { hold = HOLD_SECONDS + RESET_SECONDS; setEgg(false); } } // the dot reached the finish: the name comes back
         else { hold -= dt; if (hold < RESET_SECONDS) lit = Math.max(0, hold / RESET_SECONDS); if (hold <= 0) { prog = 0; lit = 1; } }

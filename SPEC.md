@@ -83,8 +83,8 @@ Inspirada en la pantalla de reglaje del coche.
 
 ## 5. La serpiente de letras
 
-- Una línea de letras pequeñas que repite el texto `angelbarreiro` (con un espacio entre repeticiones) sobre una forma. En `career` la forma es un **tramo de rally abierto** (en móvil, el mismo tramo girado) y las letras **circulan por él en el sentido de lectura, como en el sobre, a 3 letras por segundo**; un **punto blanco recorre el tramo de abajo (cerca) hacia arriba (lejos)** en 14 s e ilumina las letras que están en la zona por la que ya ha pasado (hace de progreso de la trayectoria profesional). Al llegar al final espera 1,5 s, las letras se apagan y vuelve a empezar. En `contact`, el sobre: las letras circulan por él.
-- Las letras siguen la curva (rotadas según la tangente) y tienen algo de perspectiva/profundidad: más pequeñas y apretadas al alejarse.
+- Una línea de letras pequeñas que repite el texto `angelbarreiro` (con un espacio entre repeticiones) sobre una forma. En `career` la forma es un **tramo de rally abierto** (en móvil, el mismo tramo girado) y las letras **circulan por él en el sentido de lectura, como en el sobre, a 5 letras por segundo**; un **punto blanco recorre el tramo de abajo (cerca) hacia arriba (lejos)** en 14 s e ilumina las letras que están en la zona por la que ya ha pasado (hace de progreso de la trayectoria profesional). Al llegar al final espera 1,5 s, las letras se apagan y vuelve a empezar. En `contact`, el sobre: las letras circulan por él.
+- Las letras siguen la curva (rotadas según la tangente; en los tramos hacia la izquierda del tramo de rally se dibujan en pie y con el orden invertido, para que el nombre se lea bien en todo el recorrido) y tienen algo de perspectiva/profundidad: más pequeñas y apretadas al alejarse.
 - **Cambia de forma según la opción seleccionada en el carrusel de inicio**, interpolando la posición de las letras de una forma a otra:
   - `career` → una carretera con curvas.
   - `contact` → el contorno de un sobre.
