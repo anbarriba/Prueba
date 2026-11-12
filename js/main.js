@@ -204,7 +204,38 @@
     };
   }
 
-  var carousel = null, snake = null, stages = null, sheet = null, lastIndex = {};
+  // Vertical list of links (contact): arrow icon on the left, ↑ ↓ moves the highlight, Enter follows the link.
+  function createList(container, links) {
+    var ul = el("ul", { "class": "vlist", "aria-label": "contact" }), rows = [], active = 0;
+    function paint() {
+      rows.forEach(function (a, i) { if (i === active) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+    }
+    links.forEach(function (l, i) {
+      var li = el("li"), a = el("a", { "class": "vrow", href: l.href });
+      if (l.newTab) { a.target = "_blank"; a.rel = "noopener"; }
+      a.appendChild(window.Ui.arrowIcon());
+      a.appendChild(el("span", { "class": "vlabel" }, l.label));
+      a.addEventListener("focus", function () { active = i; paint(); });
+      a.addEventListener("mouseenter", function () { active = i; paint(); });
+      li.appendChild(a); ul.appendChild(li); rows.push(a);
+    });
+    container.appendChild(ul);
+    paint();
+    return {
+      onKey: function (e) {
+        if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+          active = (active + (e.key === "ArrowDown" ? 1 : -1) + rows.length) % rows.length;
+          paint(); rows[active].focus();
+          return true;
+        }
+        if (e.key === "Enter" && document.activeElement !== rows[active]) { rows[active].click(); return true; }
+        return false;
+      },
+      destroy: function () { if (ul.parentNode) ul.parentNode.removeChild(ul); }
+    };
+  }
+
+  var carousel = null, snake = null, stages = null, sheet = null, list = null, lastIndex = {};
 
   // Carousel screens get a central stage (graphics come in later steps) and the carousel below it.
   // Other screens still use the temporary link list until their own steps.
@@ -213,6 +244,7 @@
     if (snake) { snake.destroy(); snake = null; }
     if (stages) { stages.destroy(); stages = null; }
     if (sheet) { sheet.destroy(); sheet = null; }
+    if (list) { list.destroy(); list = null; }
     screenEl.textContent = "";
     screenEl.setAttribute("data-screen", route.name);
     screenEl.classList.toggle("has-carousel", !!route.carousel);
@@ -240,6 +272,16 @@
       });
       tabs.push({ label: "back", href: "#career", back: true });
       sheet = window.Sheet.create(screenEl, route.company, route.project, tabs);
+      return;
+    }
+    if (route.name === "contact") {
+      var wrap = el("div", { "class": "stage stage--contact" });
+      var listBox = el("div", { "class": "contact-list" });
+      var envelope = el("div", { "class": "envelope-box" });
+      wrap.appendChild(listBox); wrap.appendChild(envelope);
+      screenEl.appendChild(wrap);
+      list = createList(listBox, route.links);
+      snake = window.Snake.create(envelope, { shape: 1, still: true });
       return;
     }
     if (!route.links.length) return;
@@ -286,6 +328,7 @@
     if (e.altKey || e.ctrlKey || e.metaKey) return;
     if (e.key === "Escape" && current && current.up) { location.hash = current.up; return; }
     if (sheet && sheet.onKey(e)) { e.preventDefault(); return; }
+    if (list && list.onKey(e)) { e.preventDefault(); return; }
     if (!carousel) return;
     if (e.key === "ArrowRight") { e.preventDefault(); carousel.move(1); }
     else if (e.key === "ArrowLeft") { e.preventDefault(); carousel.move(-1); }

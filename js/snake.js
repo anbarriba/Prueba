@@ -84,7 +84,7 @@
     var shapeTarget = opts.shape || 0, shapeW = shapeTarget;   // 0 = first shape, 1 = second
     var eggTarget = 0, eggW = 0, tLap = 0;
     var lastActivity = performance.now(), ignoreUntil = 0, clicks = [];
-    var raf = 0, last = 0, dirty = true, dead = false;
+    var raf = 0, last = 0, dirty = true, dead = false, still = !!opts.still; // still: no movement, no easter egg
     var A = {}, B = {};
 
     function layout() {
@@ -147,12 +147,12 @@
       var dt = last ? Math.min((now - last) / 1000, 0.1) : 0;
       last = now;
       var moving = false, step = dt / MORPH_SECONDS;
-      if (!reduce.matches) {
+      if (!reduce.matches && !still) {
         tLap = (tLap + dt / LAP_SECONDS) % 1; moving = true;
         if (shapeW !== shapeTarget) shapeW = shapeW < shapeTarget ? Math.min(shapeTarget, shapeW + step) : Math.max(shapeTarget, shapeW - step);
         if (eggW !== eggTarget) eggW = eggW < eggTarget ? Math.min(eggTarget, eggW + step) : Math.max(eggTarget, eggW - step);
       } else { shapeW = shapeTarget; eggW = eggTarget; }
-      if (!eggTarget && now - lastActivity > IDLE_MS) setEgg(true);
+      if (!still && !eggTarget && now - lastActivity > IDLE_MS) setEgg(true);
       if (moving || dirty) { draw(); dirty = false; }
       raf = requestAnimationFrame(frame);
     }
@@ -166,14 +166,14 @@
 
     var ro = window.ResizeObserver ? new ResizeObserver(layout) : null;
     if (ro) ro.observe(stage); else window.addEventListener("resize", layout);
-    canvas.addEventListener("click", onClick);
+    if (!still) canvas.addEventListener("click", onClick);
     ["pointermove", "pointerdown", "keydown", "touchstart", "wheel"].forEach(function (t) {
       window.addEventListener(t, activity, { passive: true });
     });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { dirty = true; });
 
     layout();
-    if (reduce.matches) { shapeW = shapeTarget; }
+    if (reduce.matches || still) { shapeW = shapeTarget; }
     raf = requestAnimationFrame(frame);
 
     return {
