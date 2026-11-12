@@ -79,7 +79,7 @@ Inspirada en la pantalla de reglaje del coche.
 - Migas: `angel barreiro | contact`.
 - Lista vertical: `email`, `linkedin`. Sin CV.
   - email → `mailto:angelbarreiroribadulla@gmail.com`
-  - linkedin → https://www.linkedin.com/in/angel-barreiro/ (pestaña nueva)
+  - linkedin → https://www.linkedin.com/in/angelbarreiro (pestaña nueva)
 
 ## 5. La serpiente de letras
 

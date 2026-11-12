@@ -82,7 +82,7 @@ window.CONTENT = {
   contact: {
     options: [
       { id: "email", label: "email", href: "mailto:angelbarreiroribadulla@gmail.com" },
-      { id: "linkedin", label: "linkedin", href: "https://www.linkedin.com/in/angel-barreiro/", newTab: true }
+      { id: "linkedin", label: "linkedin", href: "https://www.linkedin.com/in/angelbarreiro", newTab: true }
     ]
   },
   help: {
