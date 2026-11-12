@@ -15,14 +15,6 @@ function project(id, info, sections) {
     image: { src: null, alt: id + " key screen (image pending)" }, sections: sections
   };
 }
-function pending(id) {
-  return project(id, { role: "pending", years: "pending", team: "pending", platforms: "pending" }, [
-    sec("context", 18, 20, "pending", 0.1, "pending"), sec("research", 82, 18, "pending", 0.0, "pending"),
-    sec("flows", 50, 50, "pending", 0.3, "pending"), sec("ui", 30, 70, "pending", 0.9, "pending"),
-    sec("design qa", 72, 78, "pending", 1.0, "pending"), sec("results", 88, 45, "pending", 1.0, "pending")
-  ]);
-}
-
 window.CONTENT = {
   build: "ab portfolio build 1 (nov 2026)",
   site: { name: "angel barreiro", role: "product designer" },
@@ -52,15 +44,21 @@ window.CONTENT = {
     companies: [
       {
         id: "idrica", name: "idrica", years: "2024 – now", role: "Product Designer", surfaces: "pending",
-        projects: [pending("pending")]
+        titles: [{ role: "Product Designer", years: "2024 – now" }],
+        summary: "pending: a short description of the role and the product.", highlight: "pending: a standout result.",
+        projects: [] // pending: Ángel will prepare the case studies
       },
       {
         id: "leemons", name: "leemons", years: "2023 – 2024", role: "Product Designer", surfaces: "pending",
-        projects: [pending("pending")]
+        titles: [{ role: "Product Designer", years: "2023 – 2024" }],
+        summary: "From wireframes to high-fidelity prototypes, user flows and stories, working with back, front and UI, and design QA after implementation.", highlight: "pending: a standout result.",
+        projects: [] // pending: Ángel will prepare the case studies
       },
       {
         id: "pccomponentes", name: "pccomponentes", years: "2021 – 2023", role: "Product Designer",
         surfaces: "research, flows, ui",
+        titles: [{ role: "Product Designer", years: "2021 – 2023" }],
+        summary: "Visual and flow redesign of the logistics apps (mobile and desktop), research with interviews and shadowing of employees, and support on the checkout experience.", highlight: "pending: a standout result.",
         projects: [
           project("logistics", { role: "Product Designer", years: "2021 – 2023", team: "pending", platforms: "mobile, desktop" }, [
             sec("context", 18, 20, "pending", 0.1, "Visual and flow redesign of the logistics apps, on mobile and desktop."),
@@ -83,6 +81,8 @@ window.CONTENT = {
       {
         id: "inditex", name: "inditex", years: "2019 – 2021", role: "Junior Product Designer",
         surfaces: "mapping, ia, wireframes, ui",
+        titles: [{ role: "Junior Product Designer", years: "2019 – 2021" }],
+        summary: "Design of a WMS (warehouse management software): mapping, information architecture, wireframes, prototypes and interface on mobile and desktop, and collaboration on a design system.", highlight: "pending: a standout result.",
         projects: [
           project("wms", { role: "Junior Product Designer", years: "2019 – 2021", team: "pending", platforms: "mobile, desktop" }, [
             sec("context", 18, 20, "pending", 0.1, "Design of a WMS (warehouse management software), for mobile and desktop."),
@@ -97,6 +97,7 @@ window.CONTENT = {
     ]
   },
   contact: {
+    intro: "got a project in mind? let's talk.", // provisional text: Ángel will rewrite it
     options: [
       { id: "email", label: "email", href: "mailto:angelbarreiroribadulla@gmail.com" },
       { id: "linkedin", label: "linkedin", href: "https://www.linkedin.com/in/angelbarreiro", newTab: true }
@@ -105,7 +106,8 @@ window.CONTENT = {
   help: {
     keys: "use the arrow keys to choose, press enter to confirm.",
     touch: "swipe to choose, tap to confirm.",
-    sheet: { keys: "↑ ↓ choose a section, ← → switch project, esc to go back.", touch: "tap a section to open it." }
+    sheet: { keys: "↑ ↓ choose a section, ← → switch project, esc to go back.", touch: "tap a section to open it." },
+    list: { keys: "↑ ↓ choose, enter to open, esc to go back.", touch: "tap an option to open it." }
   }
 };
 })();

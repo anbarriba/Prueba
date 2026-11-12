@@ -101,6 +101,7 @@
     layout();
 
     return {
+      relayout: layout,
       show: function (companyId) {
         id = companyId;
         cancelAnimationFrame(raf);

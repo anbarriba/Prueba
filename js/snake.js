@@ -91,7 +91,6 @@
     var ctx = canvas.getContext("2d");
     var wide = sampleShape(STAGE_WIDE), tall = sampleShape(STAGE_TALL), envelope = sampleShape(ENVELOPE), silhouette = sampleShape(SILHOUETTE);
     var tables = [], zones = [], letters = 0, w = 0, h = 0, dpr = 1;
-    var still = !!opts.still;                                   // contact: no movement, no easter egg
     var shapeTarget = opts.shape || 0;                          // 0 = stage, 1 = envelope, 2 = silhouette
     var wts = [0, 0, 0]; wts[shapeTarget] = 1;                  // how much of each shape is shown (they morph into each other)
     var eggTarget = 0, eggW = 0, eggUntil = 0;
@@ -204,7 +203,7 @@
       ctx.fill();
     }
 
-    function canEgg() { return !still && shapeTarget === 0; } // the easter egg only lives on the career stage
+    function canEgg() { return shapeTarget === 0; } // the easter egg only lives on the career stage
 
     function setEgg(on) {
       if (eggTarget === (on ? 1 : 0)) return;
@@ -229,7 +228,7 @@
       var dt = last ? Math.min((now - last) / 1000, 0.1) : 0;
       last = now;
       var moving = false, step = dt / MORPH_SECONDS;
-      if (reduce.matches || still) { for (var k = 0; k < 3; k++) wts[k] = k === shapeTarget ? 1 : 0; eggW = eggTarget; prog = 1; lit = 1; }
+      if (reduce.matches) { for (var k = 0; k < 3; k++) wts[k] = k === shapeTarget ? 1 : 0; eggW = eggTarget; prog = 1; lit = 1; }
       else {
         moving = true;
         for (var j = 0; j < 3; j++) {
@@ -242,7 +241,7 @@
         if (prog < 1) { prog = Math.min(1, prog + dt / STAGE_SECONDS); if (prog === 1) { hold = HOLD_SECONDS + RESET_SECONDS; setEgg(false); } } // the dot reached the finish: the name comes back
         else { hold -= dt; if (hold < RESET_SECONDS) lit = Math.max(0, hold / RESET_SECONDS); if (hold <= 0) { prog = 0; lit = 1; } }
       }
-      if (!reduce.matches && !still) flow += FLOW * dt;
+      if (!reduce.matches) flow += FLOW * dt;
       if (eggTarget && now >= eggUntil) setEgg(false);
       if (moving || dirty) { draw(); dirty = false; }
       raf = requestAnimationFrame(frame);
