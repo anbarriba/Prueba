@@ -148,12 +148,10 @@
       var company = findCompany(parts[1]);
       if (company && parts.length <= 3) {
         var base = "#career/" + company.id;
-        var project = company.projects.filter(function (p) { return p.id === parts[2]; })[0];
-        if (parts[2] && !project) return null;
-        var crumbs = [{ label: "career", href: "#career" }, { label: company.name, href: project ? base : undefined }];
-        if (project) crumbs.push({ label: project.name });
-        return { name: "stage", company: company, project: project, crumbs: crumbs, up: project ? base : "#career",
-          links: company.projects.map(function (p) { return { label: p.name, href: base + "/" + p.id }; }) };
+        var project = parts[2] ? company.projects.filter(function (p) { return p.id === parts[2]; })[0] : company.projects[0];
+        if (!project) return null;
+        return { name: "sheet", company: company, project: project, up: "#career", links: [], help: C.help.sheet,
+          crumbs: [{ label: "career", href: "#career" }, { label: company.name, href: "#career" }, { label: project.name }] };
       }
     }
     return null;
@@ -206,7 +204,7 @@
     };
   }
 
-  var carousel = null, snake = null, stages = null, lastIndex = {};
+  var carousel = null, snake = null, stages = null, sheet = null, lastIndex = {};
 
   // Carousel screens get a central stage (graphics come in later steps) and the carousel below it.
   // Other screens still use the temporary link list until their own steps.
@@ -214,6 +212,7 @@
     carousel = null;
     if (snake) { snake.destroy(); snake = null; }
     if (stages) { stages.destroy(); stages = null; }
+    if (sheet) { sheet.destroy(); sheet = null; }
     screenEl.textContent = "";
     screenEl.setAttribute("data-screen", route.name);
     screenEl.classList.toggle("has-carousel", !!route.carousel);
@@ -235,6 +234,14 @@
       carousel.layout();
       return;
     }
+    if (route.name === "sheet") {
+      var tabs = route.company.projects.map(function (p) {
+        return { label: p.name, href: "#career/" + route.company.id + "/" + p.id, current: p === route.project };
+      });
+      tabs.push({ label: "back", href: "#career", back: true });
+      sheet = window.Sheet.create(screenEl, route.company, route.project, tabs);
+      return;
+    }
     if (!route.links.length) return;
     var ul = el("ul", { "class": "stub-list" });
     route.links.forEach(function (l) {
@@ -248,7 +255,8 @@
   }
 
   function renderHelp() {
-    helpEl.textContent = coarse.matches ? C.help.touch : C.help.keys;
+    var h = current && current.help ? current.help : C.help;
+    helpEl.textContent = coarse.matches ? h.touch : h.keys;
   }
 
   var current = null;
@@ -258,6 +266,7 @@
     current = route;
     renderCrumbs(route.crumbs);
     renderScreen(route);
+    renderHelp();
     resetTimer();
     document.title = route.crumbs[route.crumbs.length - 1].label + " – angel barreiro";
   }
@@ -276,6 +285,7 @@
   document.addEventListener("keydown", function (e) {
     if (e.altKey || e.ctrlKey || e.metaKey) return;
     if (e.key === "Escape" && current && current.up) { location.hash = current.up; return; }
+    if (sheet && sheet.onKey(e)) { e.preventDefault(); return; }
     if (!carousel) return;
     if (e.key === "ArrowRight") { e.preventDefault(); carousel.move(1); }
     else if (e.key === "ArrowLeft") { e.preventDefault(); carousel.move(-1); }
