@@ -28,7 +28,7 @@ window.CONTENT = {
   site: { name: "angel barreiro", role: "product designer" },
   home: {
     options: ["about", "career", "contact"],
-    intro: "product designer making complex tools feel simple." // provisional text: Ángel will rewrite it
+    intro: "" // short intro phrase above the carousel (one line). Empty = not shown; write it here when ready
   },
   career: {
     // Companies in reverse chronological order. Each project is one tab of the case-study screen.

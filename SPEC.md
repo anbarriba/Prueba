@@ -51,7 +51,7 @@ Todo lo visual (color, tipografía, medidas, animaciones, móvil y límites) est
 ### 4.1 Inicio (`#home`)
 - Migas: `angel barreiro | product designer` (texto en `data/content.js`).
 - Centro: **la serpiente de letras** (ver sección 5).
-- **Frase de presentación breve**, una línea, justo encima del carrusel y alineada con la palabra activa. Texto provisional (lo reescribe Ángel), en `data/content.js`.
+- **Frase de presentación breve**, una línea, justo encima del carrusel y alineada con la palabra activa. Texto en `data/content.js` (`home.intro`); está vacío por ahora y, mientras lo esté, no se muestra.
 - Carrusel: `about | career | contact`. Orden fijo. Al cargar la página queda seleccionada `career` (la opción central); al volver a inicio, la última opción visitada.
 
 ### 4.2 About (`#about`)
@@ -151,7 +151,7 @@ Textos de referencia (del portfolio actual, angelbarreiro.framer.website):
 - [ ] Proyectos de Idrica y Leemons (los prepara Ángel).
 - [ ] Lista definitiva de secciones del case study y su contenido.
 - [ ] Imágenes: pantalla principal y detalles de cada proyecto.
-- [ ] Frase de presentación de inicio y frase breve de contacto (hay texto provisional).
+- [ ] Frase de presentación de inicio (vacía, no se muestra) y frase breve de contacto (hay texto provisional).
 - [ ] About: frase de presentación, bio y formación.
 - [ ] About: enlace de la línea de créditos a la referencia del juego.
 - [ ] Ficha de cada empresa: descripción corta, resultado destacado y cargos si hubo más de uno.

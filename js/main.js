@@ -268,7 +268,7 @@
         onChange: function (i) { lastIndex[route.name] = i; if (snake) snake.setShape(HOME_SHAPE[cfg.labels[i]]); onShow(i); },
         onConfirm: function (i) { lastIndex[route.name] = i; location.hash = cfg.go(i); }
       });
-      if (route.name === "home") screenEl.appendChild(el("p", { "class": "intro" }, C.home.intro));
+      if (route.name === "home" && C.home.intro) screenEl.appendChild(el("p", { "class": "intro" }, C.home.intro));
       screenEl.appendChild(carousel.el);
       carousel.layout();
       return;
