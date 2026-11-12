@@ -137,6 +137,7 @@
     }
     if (name === "contact" && parts.length === 1) {
       return { name: "contact", crumbs: [{ label: "main menu", href: "#home" }, { label: "contact" }], up: "#home",
+        help: { keys: "↑ ↓ choose, enter to open, esc to go back.", touch: "tap an option to open it." },
         links: C.contact.options.map(function (o) { return { label: o.label, href: o.href, newTab: o.newTab }; }) };
     }
     if (name === "career") {
@@ -301,7 +302,7 @@
     helpEl.textContent = coarse.matches ? h.touch : h.keys;
   }
 
-  var current = null;
+  var current = null, firstRoute = true;
   function onRoute() {
     var route = resolve(location.hash);
     if (!route) { location.replace("#home"); return; }
@@ -310,7 +311,11 @@
     renderScreen(route);
     renderHelp();
     resetTimer();
-    document.title = route.crumbs[route.crumbs.length - 1].label + " – angel barreiro";
+    var title = route.crumbs.map(function (c) { return c.label; }).join(" / ");
+    document.title = title + " – angel barreiro";
+    document.getElementById("title").textContent = title;
+    if (!firstRoute) screenEl.focus({ preventScroll: true }); // lets screen readers notice the new screen
+    firstRoute = false;
   }
 
   // ---------- timer (restarts on every screen, always running) ----------

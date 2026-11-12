@@ -11,12 +11,15 @@
 <body>
   <div class="frame">
     <header class="top">
+      <h1 class="sr-only" id="title"></h1>
       <nav class="crumbs" id="crumbs" aria-label="breadcrumb"></nav>
       <div class="timer"><span class="timer-label">time</span> <span class="timer-value" id="timer">00:00.00</span></div>
     </header>
     <main class="screen" id="screen" tabindex="-1"></main>
-    <p class="help" id="help"></p>
-    <p class="build" id="build"></p>
+    <footer class="foot">
+      <p class="help" id="help"></p>
+      <p class="build" id="build"></p>
+    </footer>
   </div>
   <script src="data/content.js"></script>
   <script src="js/ui.js"></script>
