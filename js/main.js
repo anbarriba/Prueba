@@ -10,6 +10,118 @@
 
   document.getElementById("build").textContent = C.build;
 
+  // ---------- infinite carousel ----------
+  // Words are rendered in an odd number of identical copies; `pos` is an absolute
+  // index into that sequence. The track is only ever moved by CSS transform and,
+  // before each move, re-centred on the middle copy without any visible jump.
+  function createCarousel(labels, opts) {
+    var n = labels.length;
+    var root = el("div", { "class": "carousel", role: "group", "aria-label": opts.label || "menu" });
+    var track = el("div", { "class": "c-track" });
+    root.appendChild(track);
+    var words = [], copies = 3, cycle = 0, pos = opts.initial || 0, startX = null, startY = null, swiped = false;
+
+    function build(count) {
+      track.textContent = "";
+      words = [];
+      copies = count;
+      for (var c = 0; c < count; c++) {
+        for (var i = 0; i < n; i++) {
+          var item = el("span", { "class": "c-item" });
+          var b = el("button", { "class": "c-word", type: "button" }, labels[i]);
+          b.setAttribute("data-pos", String(words.length));
+          item.appendChild(b);
+          item.appendChild(el("span", { "class": "c-sep", "aria-hidden": "true" }));
+          track.appendChild(item);
+          words.push(b);
+        }
+      }
+    }
+
+    function anchor() { return root.clientWidth / 3; }
+    function targetX(p) { return anchor() - words[p].parentNode.offsetLeft; }
+    function currentX() {
+      var m = getComputedStyle(track).transform;
+      return m && m !== "none" ? new DOMMatrix(m).m41 : 0;
+    }
+    function setX(x, animate) {
+      track.style.transition = animate ? "" : "none";
+      track.style.transform = "translateX(" + x + "px)";
+      if (!animate) track.getBoundingClientRect(); // flush so the jump is not animated
+    }
+
+    // Move `pos` back into the middle copy, compensating the transform so nothing shifts.
+    function recentre() {
+      var mid = Math.floor(copies / 2), shift = mid - Math.floor(pos / n);
+      if (!shift) return;
+      pos += shift * n;
+      setX(currentX() - shift * cycle, false);
+    }
+
+    function markActive() {
+      words.forEach(function (w, i) {
+        var live = i === pos;
+        if (live) w.setAttribute("aria-current", "true"); else w.removeAttribute("aria-current");
+        w.tabIndex = live ? 0 : -1;
+        w.setAttribute("aria-hidden", live ? "false" : String(i % n !== pos % n));
+      });
+    }
+
+    function layout() {
+      build(3);
+      cycle = words[n].parentNode.offsetLeft - words[0].parentNode.offsetLeft;
+      var side = Math.ceil(root.clientWidth / Math.max(cycle, 1)) + 1;
+      var count = side * 2 + 1;
+      if (count !== 3) { build(count); cycle = words[n].parentNode.offsetLeft - words[0].parentNode.offsetLeft; }
+      pos = Math.floor(copies / 2) * n + (pos % n + n) % n;
+      markActive();
+      setX(targetX(pos), false);
+    }
+
+    // Move by `d` options (negative = left), re-centring first so the target copy exists.
+    function step(d) {
+      var prevOpt = pos % n;
+      recentre();
+      var hadFocus = track.contains(document.activeElement);
+      pos += d;
+      markActive();
+      setX(targetX(pos), true);
+      if (hadFocus) words[pos].focus({ preventScroll: true });
+      if (pos % n !== prevOpt && opts.onChange) opts.onChange(pos % n);
+    }
+
+    var api = {
+      el: root,
+      move: step,
+      confirm: function () { if (opts.onConfirm) opts.onConfirm(pos % n); },
+      index: function () { return pos % n; },
+      layout: layout
+    };
+
+    root.addEventListener("click", function (e) {
+      if (swiped) { swiped = false; return; }
+      var b = e.target.closest && e.target.closest(".c-word");
+      if (!b) return;
+      var p = Number(b.getAttribute("data-pos"));
+      if (p === pos) api.confirm(); else step(p - pos);
+    });
+
+    // swipe: one option per gesture; the click that follows a swipe is ignored
+    root.addEventListener("pointerdown", function (e) {
+      if (e.pointerType === "mouse") return;
+      startX = e.clientX; startY = e.clientY; swiped = false;
+    });
+    root.addEventListener("pointerup", function (e) {
+      if (startX === null) return;
+      var dx = e.clientX - startX, dy = e.clientY - startY;
+      startX = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { swiped = true; api.move(dx < 0 ? 1 : -1); }
+    });
+    root.addEventListener("pointercancel", function () { startX = null; });
+
+    return api;
+  }
+
   // ---------- routing ----------
   function findCompany(id) {
     return C.career.companies.filter(function (c) { return c.id === id; })[0];
@@ -20,8 +132,8 @@
     var parts = hash.replace(/^#\/?/, "").split("/").filter(Boolean);
     var name = parts[0] || "home";
     if (name === "home" && parts.length <= 1) {
-      return { name: "home", crumbs: [{ label: "main menu" }], up: null,
-        links: C.home.options.map(function (o) { return { label: o, href: "#" + o }; }) };
+      return { name: "home", crumbs: [{ label: "main menu" }], up: null, links: [],
+        carousel: { label: "main menu", labels: C.home.options, go: function (i) { return "#" + C.home.options[i]; } } };
     }
     if (name === "contact" && parts.length === 1) {
       return { name: "contact", crumbs: [{ label: "main menu", href: "#home" }, { label: "contact" }], up: "#home",
@@ -29,8 +141,9 @@
     }
     if (name === "career") {
       if (parts.length === 1) {
-        return { name: "career", crumbs: [{ label: "career", href: "#home" }, { label: "stage select" }], up: "#home",
-          links: C.career.companies.map(function (c) { return { label: c.name, href: "#career/" + c.id }; }) };
+        return { name: "career", crumbs: [{ label: "career", href: "#home" }, { label: "stage select" }], up: "#home", links: [],
+          carousel: { label: "stage select", labels: C.career.companies.map(function (c) { return c.name; }),
+            go: function (i) { return "#career/" + C.career.companies[i].id; } } };
       }
       var company = findCompany(parts[1]);
       if (company && parts.length <= 3) {
@@ -65,10 +178,28 @@
     });
   }
 
-  // Placeholder body; replaced by carousel / lists / case study in later steps.
+  var carousel = null, lastIndex = {};
+
+  // Carousel screens get a central stage (graphics come in later steps) and the carousel below it.
+  // Other screens still use the temporary link list until their own steps.
   function renderScreen(route) {
+    carousel = null;
     screenEl.textContent = "";
     screenEl.setAttribute("data-screen", route.name);
+    screenEl.classList.toggle("has-carousel", !!route.carousel);
+    if (route.carousel) {
+      var cfg = route.carousel;
+      screenEl.appendChild(el("div", { "class": "stage", "aria-hidden": "true" }));
+      carousel = createCarousel(cfg.labels, {
+        label: cfg.label,
+        initial: lastIndex[route.name] || 0,
+        onChange: function (i) { lastIndex[route.name] = i; },
+        onConfirm: function (i) { lastIndex[route.name] = i; location.hash = cfg.go(i); }
+      });
+      screenEl.appendChild(carousel.el);
+      carousel.layout();
+      return;
+    }
     if (!route.links.length) return;
     var ul = el("ul", { "class": "stub-list" });
     route.links.forEach(function (l) {
@@ -108,8 +239,21 @@
 
   // ---------- global keys: Esc goes up one level ----------
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && current && current.up) location.hash = current.up;
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === "Escape" && current && current.up) { location.hash = current.up; return; }
+    if (!carousel) return;
+    if (e.key === "ArrowRight") { e.preventDefault(); carousel.move(1); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); carousel.move(-1); }
+    else if (e.key === "Enter") { e.preventDefault(); carousel.confirm(); }
   });
+
+  var resizeTimer;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () { if (carousel) carousel.layout(); }, 100);
+  });
+  // web fonts change word widths, so lay out again once they are ready
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (carousel) carousel.layout(); });
 
   window.addEventListener("hashchange", onRoute);
   if (coarse.addEventListener) coarse.addEventListener("change", renderHelp);

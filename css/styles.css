@@ -36,6 +36,7 @@ a { color: inherit; text-decoration: none; }
 
 .frame {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto 1fr auto auto;
   height: 100dvh;
   padding:
@@ -58,6 +59,29 @@ a { color: inherit; text-decoration: none; }
 .timer-value { font-family: var(--font-dots); font-weight: 700; font-size: 1rem; color: var(--text-dim); font-variant-numeric: tabular-nums; }
 
 .screen { min-height: 0; overflow: auto; outline: none; display: flex; flex-direction: column; justify-content: center; }
+
+/* Carousel: bleeds to the screen edges so words are cut there */
+.screen.has-carousel { justify-content: flex-end; overflow: visible; } /* the carousel bleeds past the padding; nothing here scrolls */
+.stage { flex: 1; min-height: 0; }
+.carousel {
+  overflow: hidden;
+  overflow: clip; /* not scrollable, not even programmatically */
+  margin-left: calc(-1 * (var(--gutter) + env(safe-area-inset-left)));
+  margin-right: calc(-1 * (var(--gutter) + env(safe-area-inset-right)));
+  font-size: clamp(2.25rem, 6vw, 4.5rem);
+  touch-action: pan-y;
+}
+.c-track { display: flex; width: max-content; transition: transform 250ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+.c-item { display: flex; align-items: center; flex: none; }
+.c-word {
+  appearance: none; background: none; border: 0; margin: 0; cursor: pointer;
+  padding: 0.3em 0; min-height: 44px;
+  font: 300 1em/1 var(--font-sans); letter-spacing: -0.02em; text-transform: lowercase;
+  color: var(--text-dim); white-space: nowrap;
+}
+.c-word[aria-current="true"], .c-word:hover { color: var(--text); }
+.c-sep { width: 1px; height: 0.76em; background: var(--line); margin: 0 0.6em; flex: none; }
+@media (prefers-reduced-motion: reduce) { .c-track { transition: none !important; } }
 
 /* Temporary navigation until the carousel/lists exist (steps 2+). */
 .stub-list { list-style: none; margin: 0; padding: 0; max-width: 28rem; }
