@@ -25,6 +25,7 @@ function pending(id) {
 
 window.CONTENT = {
   build: "ab portfolio build 1 (nov 2026)",
+  site: { name: "angel barreiro", role: "product designer" },
   home: { options: ["career", "contact"] },
   career: {
     // Companies in reverse chronological order. Each project is one tab of the case-study screen.
@@ -80,8 +81,8 @@ window.CONTENT = {
   },
   contact: {
     options: [
-      { id: "email", label: "email", href: "mailto:pending@example.com" }, // TODO: real address pending
-      { id: "linkedin", label: "linkedin", href: "https://www.linkedin.com/in/angel-barreiro/", newTab: true }
+      { id: "email", label: "email", href: "mailto:angelbarreiroribadulla@gmail.com" },
+      { id: "linkedin", label: "linkedin", href: "https://www.linkedin.com/in/angelbarreiro", newTab: true }
     ]
   },
   help: {
