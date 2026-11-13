@@ -135,24 +135,30 @@
       return { name: "home", crumbs: [{ label: C.site.name }, { label: C.site.role }], up: null, links: [],
         carousel: { label: "main menu", labels: C.home.options, go: function (i) { return "#" + C.home.options[i]; } } };
     }
+    if (name === "about" && parts.length === 1) {
+      return { name: "about", crumbs: [{ label: C.site.name, href: "#home" }, { label: "about" }], up: "#home", links: [] };
+    }
     if (name === "contact" && parts.length === 1) {
       return { name: "contact", crumbs: [{ label: C.site.name, href: "#home" }, { label: "contact" }], up: "#home",
-        help: { keys: "↑ ↓ choose, enter to open, esc to go back.", touch: "tap an option to open it." },
+        help: C.help.list,
         links: C.contact.options.map(function (o) { return { label: o.label, href: o.href, newTab: o.newTab }; }) };
     }
     if (name === "career") {
       if (parts.length === 1) {
         return { name: "career", crumbs: [{ label: "career", href: "#home" }, { label: "stage select" }], up: "#home", links: [],
-          carousel: { label: "stage select", labels: C.career.companies.map(function (c) { return c.name; }),
-            go: function (i) { return "#career/" + C.career.companies[i].id; } } };
+          carousel: { label: "stage select", labels: ["all stages"].concat(C.career.companies.map(function (c) { return c.name; })),
+            go: function (i) { return "#career/" + C.career.companies[i - 1].id; } } };
       }
       var company = findCompany(parts[1]);
-      if (company && parts.length <= 3) {
-        var base = "#career/" + company.id;
-        var project = parts[2] ? company.projects.filter(function (p) { return p.id === parts[2]; })[0] : company.projects[0];
+      if (company && parts.length === 2) {
+        return { name: "ficha", company: company, up: "#career", links: [], help: C.help.list,
+          crumbs: [{ label: "career", href: "#career" }, { label: company.name }] };
+      }
+      if (company && parts.length === 3) {
+        var project = company.projects.filter(function (p) { return p.id === parts[2]; })[0];
         if (!project) return null;
-        return { name: "sheet", company: company, project: project, up: "#career", links: [], help: C.help.sheet,
-          crumbs: [{ label: "career", href: "#career" }, { label: company.name, href: "#career" }, { label: project.name }] };
+        return { name: "sheet", company: company, project: project, up: "#career/" + company.id, links: [], help: C.help.sheet,
+          crumbs: [{ label: "career", href: "#career" }, { label: company.name, href: "#career/" + company.id }, { label: project.name }] };
       }
     }
     return null;
@@ -177,75 +183,19 @@
     });
   }
 
-  // Career stage select: dotted route on the left, company card on the right.
-  function createStagesView(stage, companies) {
-    stage.classList.add("stage--career");
-    var routeBox = el("div", { "class": "route-box" });
-    var card = el("div", { "class": "card", "aria-live": "polite" });
-    var thumb = el("div", { "class": "card-thumb", role: "img", "aria-label": "image coming soon" });
-    var name = el("p", { "class": "card-name" });
-    var rows = el("dl", { "class": "card-rows" });
-    card.appendChild(thumb); card.appendChild(name); card.appendChild(rows);
-    stage.appendChild(routeBox); stage.appendChild(card);
-    var route = window.Stages.create(routeBox);
-    return {
-      show: function (i) {
-        var c = companies[i];
-        name.textContent = c.name;
-        rows.textContent = "";
-        [["years", c.years], ["role", c.role], ["surfaces", c.surfaces]].forEach(function (r) {
-          var row = el("div", { "class": "card-row" });
-          row.appendChild(el("dt", {}, r[0] + ":"));
-          row.appendChild(el("dd", {}, r[1]));
-          rows.appendChild(row);
-        });
-        route.show(c.id);
-      },
-      destroy: function () { route.destroy(); }
-    };
-  }
+  var carousel = null, snake = null, stages = null, sheet = null, list = null, about = null, ficha = null;
+  var lastIndex = { home: 1, career: 0 }; // the home carousel starts on career (the middle option)
+  var HOME_SHAPE = { about: 2, career: 0, contact: 1 }; // which snake shape each home option shows
 
-  // Vertical list of links (contact): arrow icon on the left, ↑ ↓ moves the highlight, Enter follows the link.
-  function createList(container, links) {
-    var ul = el("ul", { "class": "vlist", "aria-label": "contact" }), rows = [], active = 0;
-    function paint() {
-      rows.forEach(function (a, i) { if (i === active) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
-    }
-    links.forEach(function (l, i) {
-      var li = el("li"), a = el("a", { "class": "vrow", href: l.href });
-      if (l.newTab) { a.target = "_blank"; a.rel = "noopener"; }
-      a.appendChild(window.Ui.arrowIcon());
-      a.appendChild(el("span", { "class": "vlabel" }, l.label));
-      a.addEventListener("focus", function () { active = i; paint(); });
-      a.addEventListener("mouseenter", function () { active = i; paint(); });
-      li.appendChild(a); ul.appendChild(li); rows.push(a);
-    });
-    container.appendChild(ul);
-    paint();
-    return {
-      onKey: function (e) {
-        if (e.key === "ArrowDown" || e.key === "ArrowUp") {
-          active = (active + (e.key === "ArrowDown" ? 1 : -1) + rows.length) % rows.length;
-          paint(); rows[active].focus();
-          return true;
-        }
-        if (e.key === "Enter" && document.activeElement !== rows[active]) { rows[active].click(); return true; }
-        return false;
-      },
-      destroy: function () { if (ul.parentNode) ul.parentNode.removeChild(ul); }
-    };
-  }
-
-  var carousel = null, snake = null, stages = null, sheet = null, list = null, lastIndex = {};
-
-  // Carousel screens get a central stage (graphics come in later steps) and the carousel below it.
-  // Other screens still use the temporary link list until their own steps.
+  // Carousel screens get a central stage and the carousel below it; the others build their own content.
   function renderScreen(route) {
     carousel = null;
     if (snake) { snake.destroy(); snake = null; }
     if (stages) { stages.destroy(); stages = null; }
     if (sheet) { sheet.destroy(); sheet = null; }
     if (list) { list.destroy(); list = null; }
+    if (about) { about.destroy(); about = null; }
+    if (ficha) { ficha.destroy(); ficha = null; }
     screenEl.textContent = "";
     screenEl.setAttribute("data-screen", route.name);
     screenEl.classList.toggle("has-carousel", !!route.carousel);
@@ -255,46 +205,41 @@
       screenEl.appendChild(stage);
       var initial = lastIndex[route.name] || 0;
       var onShow = function () {};
-      if (route.name === "home") snake = window.Snake.create(stage, { shape: initial });
-      if (route.name === "career") { stages = createStagesView(stage, C.career.companies); onShow = stages.show; onShow(initial); }
+      if (route.name === "home") snake = window.Snake.create(stage, { shape: HOME_SHAPE[cfg.labels[initial]] });
+      if (route.name === "career") { stages = window.Career.createStageSelect(stage, C.career.companies); onShow = stages.show; onShow(initial); }
       carousel = createCarousel(cfg.labels, {
         label: cfg.label,
         initial: initial,
-        onChange: function (i) { lastIndex[route.name] = i; if (snake) snake.setShape(i); onShow(i); },
-        onConfirm: function (i) { lastIndex[route.name] = i; location.hash = cfg.go(i); }
+        onChange: function (i) { lastIndex[route.name] = i; if (snake) snake.setShape(HOME_SHAPE[cfg.labels[i]]); onShow(i); },
+        onConfirm: function (i) {
+          lastIndex[route.name] = i;
+          if (route.name === "career" && i === 0) stages.open(); // "all stages": open the highlighted row of the table
+          else location.hash = cfg.go(i);
+        }
       });
+      if (route.name === "home" && C.home.intro) screenEl.appendChild(el("p", { "class": "intro" }, C.home.intro));
       screenEl.appendChild(carousel.el);
       carousel.layout();
       return;
     }
+    if (route.name === "about") { about = window.About.create(screenEl, C.about); return; }
+    if (route.name === "ficha") { ficha = window.Career.createFicha(screenEl, route.company); return; }
     if (route.name === "sheet") {
       var tabs = route.company.projects.map(function (p) {
         return { label: p.name, href: "#career/" + route.company.id + "/" + p.id, current: p === route.project };
       });
-      tabs.push({ label: "back", href: "#career", back: true });
+      tabs.push({ label: "back", href: "#career/" + route.company.id, back: true });
       sheet = window.Sheet.create(screenEl, route.company, route.project, tabs);
       return;
     }
     if (route.name === "contact") {
-      var wrap = el("div", { "class": "stage stage--contact" });
+      var wrap = el("div", { "class": "contact" });
+      wrap.appendChild(el("p", { "class": "contact-intro" }, C.contact.intro));
       var listBox = el("div", { "class": "contact-list" });
-      var envelope = el("div", { "class": "envelope-box" });
-      wrap.appendChild(listBox); wrap.appendChild(envelope);
+      wrap.appendChild(listBox);
       screenEl.appendChild(wrap);
-      list = createList(listBox, route.links);
-      snake = window.Snake.create(envelope, { shape: 1, still: true });
-      return;
+      list = window.Ui.createList(listBox, route.links, "contact");
     }
-    if (!route.links.length) return;
-    var ul = el("ul", { "class": "stub-list" });
-    route.links.forEach(function (l) {
-      var a = el("a", { href: l.href }, l.label);
-      if (l.newTab) { a.target = "_blank"; a.rel = "noopener"; }
-      var li = el("li");
-      li.appendChild(a);
-      ul.appendChild(li);
-    });
-    screenEl.appendChild(ul);
   }
 
   function renderHelp() {
@@ -333,6 +278,8 @@
     if (e.altKey || e.ctrlKey || e.metaKey) return;
     if (e.key === "Escape" && current && current.up) { location.hash = current.up; return; }
     if (sheet && sheet.onKey(e)) { e.preventDefault(); return; }
+    if (ficha && ficha.onKey(e)) { e.preventDefault(); return; }
+    if (stages && stages.onKey(e)) { e.preventDefault(); return; }
     if (list && list.onKey(e)) { e.preventDefault(); return; }
     if (!carousel) return;
     if (e.key === "ArrowRight") { e.preventDefault(); carousel.move(1); }

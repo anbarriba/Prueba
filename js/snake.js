@@ -1,6 +1,8 @@
 // Letter snake for the home screen. On "career" the letters sit along an open rally stage and a dot
 // runs the stage from the bottom (near) to the top (far), lighting the letters it passes (a career progress bar).
-// The letters circulate along the stage in reading direction (like around the envelope), while the dot runs up it. On "contact" they form an envelope. Touching the dot (career only) shows a phrase instead of the name for a few seconds.
+// The letters circulate along the stage in reading direction (like around the envelope), while the dot runs up it. On "contact" they form an envelope and on "about" the outline of a person's silhouette.
+// Touching the dot (career only) shows a phrase instead of the name for a few seconds.
+// Shapes are numbered: 0 = stage (career), 1 = envelope (contact), 2 = silhouette (about).
 (function () {
   "use strict";
 
@@ -21,6 +23,7 @@
   var STAGE_WIDE = { d: "M445,42 C439,42 422,41 410,41 C398,41 376,42 375,43 C374,44 396,42 405,44 C414,46 423,50 426,54 C429,58 430,63 425,66 C420,69 414,71 398,73 C382,75 346,75 330,76 C314,77 305,78 300,80 C295,82 291,87 298,90 C305,93 320,94 340,97 C360,100 404,102 420,105 C436,108 436,110 438,113 C440,116 440,120 430,122 C420,124 402,127 380,128 C358,129 330,130 300,130 C270,130 230,127 200,127 C170,127 143,127 120,128 C97,129 73,130 62,132 C51,134 49,135 52,137 C55,139 70,142 80,146 C90,150 107,155 112,160 C117,165 110,170 112,176 C114,182 118,190 126,196 C134,202 148,210 160,215 C172,220 183,224 200,225 C217,226 238,224 260,222 C282,220 310,213 330,210 C350,207 359,205 380,204 C401,203 442,205 455,205", open: true, depth: 1 };
   var STAGE_TALL = { d: "M-42,445 C-42,439 -41,422 -41,410 C-41,398 -42,376 -43,375 C-44,374 -42,396 -44,405 C-46,414 -50,423 -54,426 C-58,429 -63,430 -66,425 C-69,420 -71,414 -73,398 C-75,382 -75,346 -76,330 C-77,314 -78,305 -80,300 C-82,295 -87,291 -90,298 C-93,305 -94,320 -97,340 C-100,360 -102,404 -105,420 C-108,436 -110,436 -113,438 C-116,440 -120,440 -122,430 C-124,420 -127,402 -128,380 C-129,358 -130,330 -130,300 C-130,270 -127,230 -127,200 C-127,170 -127,143 -128,120 C-129,97 -130,73 -132,62 C-134,51 -135,49 -137,52 C-139,55 -142,70 -146,80 C-150,90 -155,107 -160,112 C-165,117 -170,110 -176,112 C-182,114 -190,118 -196,126 C-202,134 -210,148 -215,160 C-220,172 -224,183 -225,200 C-226,217 -224,238 -222,260 C-220,282 -213,310 -210,330 C-207,350 -205,359 -204,380 C-203,401 -205,442 -205,455", open: true, depth: 1 };
   var ENVELOPE = { d: "M10,10 L50,35 L90,10 L90,50 L10,50 Z", open: false, depth: 0.35 };
+  var SILHOUETTE = { d: window.Figure.OUTLINE, open: false, depth: 0.35 };
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -86,16 +89,16 @@
     canvas.setAttribute("aria-hidden", "true");
     stage.appendChild(canvas);
     var ctx = canvas.getContext("2d");
-    var wide = sampleShape(STAGE_WIDE), tall = sampleShape(STAGE_TALL), envelope = sampleShape(ENVELOPE);
+    var wide = sampleShape(STAGE_WIDE), tall = sampleShape(STAGE_TALL), envelope = sampleShape(ENVELOPE), silhouette = sampleShape(SILHOUETTE);
     var tables = [], zones = [], letters = 0, w = 0, h = 0, dpr = 1;
-    var still = !!opts.still;                                   // contact: no movement, no easter egg
-    var shapeTarget = opts.shape || 0, shapeW = shapeTarget;    // 0 = stage, 1 = envelope
+    var shapeTarget = opts.shape || 0;                          // 0 = stage, 1 = envelope, 2 = silhouette
+    var wts = [0, 0, 0]; wts[shapeTarget] = 1;                  // how much of each shape is shown (they morph into each other)
     var eggTarget = 0, eggW = 0, eggUntil = 0;
     var lap = 0;                                                // envelope flow (0..1)
     var flow = 0;                                               // how far the letters have slid along the stage (in letters)
     var prog = 0, hold = 0, lit = 1;                            // the dot: position 0..1 along the stage, wait, lit-letters level
     var raf = 0, last = 0, dirty = true, dead = false;
-    var head = { x: -99, y: -99 }, A = {}, B = {};
+    var head = { x: -99, y: -99 }, A = {}, B = {}, B0 = {}, C = {}, CL = {}, closedShare = 0;
 
     function layout() {
       var rect = stage.getBoundingClientRect();
@@ -104,8 +107,8 @@
       canvas.width = w * dpr; canvas.height = h * dpr;
       var mobile = window.matchMedia("(max-width: 767px)").matches;
       var minPx = mobile ? 9 : 10, maxPx = mobile ? 12 : 14;
-      tables = [bake(h > w ? tall : wide, w, h, 0.96, 0.98, minPx, maxPx), bake(envelope, w, h, mobile ? 0.9 : 0.8, 0.9, minPx, maxPx)];
-      var total = (tables[0].total + tables[1].total) / 2;
+      tables = [bake(h > w ? tall : wide, w, h, 0.96, 0.98, minPx, maxPx), bake(envelope, w, h, mobile ? 0.9 : 0.8, 0.9, minPx, maxPx), bake(silhouette, w, h, mobile ? 0.9 : 0.8, 0.9, minPx, maxPx)];
+      var total = (tables[0].total + tables[1].total + tables[2].total) / 3;
       letters = Math.max(1, Math.round(total / 0.85 / WORD.length)) * WORD.length; // whole words, so the loop has no seam
       zones = computeZones(tables[0], tables[0].total / letters);
       dirty = true;
@@ -140,11 +143,22 @@
       return runs;
     }
 
+    // Position on the closed shapes (envelope and silhouette) at fraction v, blended by t.
+    function closedAt(v) {
+      var t = closedShare;
+      at(tables[1], v, B0); at(tables[2], v, C);
+      CL.x = lerp(B0.x, C.x, t); CL.y = lerp(B0.y, C.y, t); CL.size = lerp(B0.size, C.size, t); CL.alpha = lerp(B0.alpha, C.alpha, t);
+      CL.dx = lerp(B0.dx, C.dx, t); CL.dy = lerp(B0.dy, C.dy, t);
+    }
+
     function draw() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
       if (!tables.length) return;
-      var m = smooth(shapeW), e = smooth(eggW), reachedFrom = 1 - prog;
+      // m = how much of the closed shapes (envelope, silhouette) is shown instead of the stage; t = silhouette's share of them
+      var w0 = smooth(wts[0]), w1 = smooth(wts[1]), w2 = smooth(wts[2]), wsum = w0 + w1 + w2 || 1;
+      var m = (w1 + w2) / wsum, e = smooth(eggW), reachedFrom = 1 - prog;
+      closedShare = w1 + w2 > 0 ? w2 / (w1 + w2) : 0;
       var total = tables[0].total, sp = total / letters, list = [];
       zones.forEach(function (z) {
         var lo = Math.min(z.t0, z.t1), hi = Math.max(z.t0, z.t1);
@@ -169,7 +183,8 @@
       }
       var count = Math.max(list.length, letters);
       for (var i = 0; i < count; i++) {
-        at(tables[1], (i % letters) / letters + lap, B);
+        closedAt((i % letters) / letters + lap);
+        B = CL;
         var a = list[i];
         if (!a) { if (m > 0) put(B.x, B.y, B.size, B.alpha * m, Math.atan2(B.dy, B.dx), i); continue; }
         if (i >= letters) { if (m < 1) put(a.x, a.y, a.size, a.alpha * (1 - m), a.ang, a.n); continue; }
@@ -180,15 +195,15 @@
         if (m > 0) put(x, y, size, alpha * m, ang, i);
       }
       // the dot: runs the stage; on the envelope it sits at the seam of the letters
-      at(tables[0], Math.min(Math.max(reachedFrom, 0.0001), 0.9999), A); at(tables[1], lap - 0.5 / letters, B);
-      head.x = lerp(A.x, B.x, m); head.y = lerp(A.y, B.y, m);
+      at(tables[0], Math.min(Math.max(reachedFrom, 0.0001), 0.9999), A); closedAt(lap - 0.5 / letters);
+      head.x = lerp(A.x, CL.x, m); head.y = lerp(A.y, CL.y, m);
       ctx.globalAlpha = 1;
       ctx.beginPath();
       ctx.arc(head.x, head.y, 3, 0, Math.PI * 2);
       ctx.fill();
     }
 
-    function canEgg() { return !still && shapeTarget === 0; } // the easter egg only lives on the career stage
+    function canEgg() { return shapeTarget === 0; } // the easter egg only lives on the career stage
 
     function setEgg(on) {
       if (eggTarget === (on ? 1 : 0)) return;
@@ -213,17 +228,20 @@
       var dt = last ? Math.min((now - last) / 1000, 0.1) : 0;
       last = now;
       var moving = false, step = dt / MORPH_SECONDS;
-      if (reduce.matches || still) { shapeW = shapeTarget; eggW = eggTarget; prog = 1; lit = 1; }
+      if (reduce.matches) { for (var k = 0; k < 3; k++) wts[k] = k === shapeTarget ? 1 : 0; eggW = eggTarget; prog = 1; lit = 1; }
       else {
         moving = true;
-        if (shapeW !== shapeTarget) shapeW = shapeW < shapeTarget ? Math.min(shapeTarget, shapeW + step) : Math.max(shapeTarget, shapeW - step);
+        for (var j = 0; j < 3; j++) {
+          var goal = j === shapeTarget ? 1 : 0;
+          if (wts[j] !== goal) wts[j] = wts[j] < goal ? Math.min(goal, wts[j] + step) : Math.max(goal, wts[j] - step);
+        }
         if (eggW !== eggTarget) eggW = eggW < eggTarget ? Math.min(eggTarget, eggW + step) : Math.max(eggTarget, eggW - step);
         lap = (lap + dt * FLOW / letters) % 1; // envelope: same speed in letters per second as the stage
         // the dot runs the stage, waits at the finish, then the lit letters fade and it starts again
         if (prog < 1) { prog = Math.min(1, prog + dt / STAGE_SECONDS); if (prog === 1) { hold = HOLD_SECONDS + RESET_SECONDS; setEgg(false); } } // the dot reached the finish: the name comes back
         else { hold -= dt; if (hold < RESET_SECONDS) lit = Math.max(0, hold / RESET_SECONDS); if (hold <= 0) { prog = 0; lit = 1; } }
       }
-      if (!reduce.matches && !still) flow += FLOW * dt;
+      if (!reduce.matches) flow += FLOW * dt;
       if (eggTarget && now >= eggUntil) setEgg(false);
       if (moving || dirty) { draw(); dirty = false; }
       raf = requestAnimationFrame(frame);
@@ -238,7 +256,7 @@
     raf = requestAnimationFrame(frame);
 
     return {
-      setShape: function (i) { shapeTarget = i ? 1 : 0; if (shapeTarget) setEgg(false); if (reduce.matches) shapeW = shapeTarget; dirty = true; },
+      setShape: function (i) { shapeTarget = i; if (shapeTarget) setEgg(false); dirty = true; },
       destroy: function () {
         dead = true; cancelAnimationFrame(raf);
         if (ro) ro.disconnect(); else window.removeEventListener("resize", layout);
