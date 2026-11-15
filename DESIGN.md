@@ -34,7 +34,7 @@ Reglas:
 - No hay modo oscuro ni claro: la web tiene un único tema. Declara `color-scheme: light`.
 - El texto blanco (`--text` / `--text-dim`) solo se usa en tamaños de 18 px o más, o en textos de una línea (migas, etiquetas, ayuda). Cualquier párrafo de más de una línea va en `--ink`. Única excepción: la frase de presentación de About (tamaño de 24 px o más) puede ocupar varias líneas en `--text`.
 - El número grande va en `--text` sobre `--box`, como en la referencia. Es decorativo-informativo: repite su valor en texto accesible (`aria-label` o texto oculto visualmente).
-- `--start` y `--finish` solo en esos dos puntos. Ningún otro elemento usa color.
+- `--start` y `--finish` solo en esos dos puntos. Ningún otro elemento usa color. Los logos de empresa se muestran como siluetas blancas (`--text`), sin sus colores de marca.
 
 ## 3. Tipografía
 
@@ -139,7 +139,7 @@ Reglas:
 ### 5.4 Recorridos de trayectoria
 - Puntos blancos de 4 px (`--text`) separados entre sí 6 px a lo largo del trazado. Primer punto en `--start` y último en `--finish`, ambos de 6 px.
 - Cada empresa tiene un trazado distinto, generado con una semilla fija por empresa para que siempre sea el mismo.
-- Ficha a la derecha: imagen de cabecera de 160 × 40 px (hueco con borde 1 px en `--line` mientras no haya imagen), y debajo filas `etiqueta: valor`.
+- Ficha a la derecha: imagen de cabecera de 160 × 40 px (el logo de la empresa en blanco, contenido en la caja y alineado a la izquierda, sin borde; hueco con borde 1 px en `--line` si no hay logo), y debajo filas `etiqueta: valor`.
 
 ### 5.5 Pantalla de reglaje
 - Dos columnas en escritorio: izquierda 55 % (imagen principal arriba; debajo, fila con caja `--panel` y caja `--box` lado a lado; debajo, barra de escala; debajo, párrafo). Derecha 45 % (datos del proyecto arriba; lista de secciones debajo).
@@ -172,7 +172,7 @@ Reglas:
 
 ### 5.10 Ficha de empresa
 - Dos columnas en escritorio: izquierda 55 % (nombre de la empresa; evolución de cargos; descripción corta; resultado destacado), derecha 45 % (lista de case studies y `back`, con la lista vertical de 5.2).
-- Nombre: estilo de nombre de empresa en fichas (§3). Cargos: filas `cargo` y `años` con el estilo de etiquetas y datos de ficha, separadas por líneas de 1 px en `--line`, del más reciente al más antiguo.
+- Logo de la empresa arriba, en la misma caja de 160 × 40 px que la tarjeta de la selección de tramo, y debajo el nombre: estilo de nombre de empresa en fichas (§3). Cargos: filas `cargo` y `años` con el estilo de etiquetas y datos de ficha, separadas por líneas de 1 px en `--line`, del más reciente al más antiguo.
 - Descripción y resultado destacado: estilo de párrafo (§3). El resultado lleva encima la etiqueta `highlight` (Inter 400 `0.875rem`, `--text-dim`).
 - Móvil: una columna; primero cargos, descripción y resultado; debajo la lista de case studies.
 

@@ -71,13 +71,13 @@ Todo lo visual (color, tipografía, medidas, animaciones, móvil y límites) est
 - **`all stages`**: vista de lista con toda la experiencia de un vistazo, con estética de tabla de tiempos. Una fila por empresa, de la más reciente a la más antigua: `número | empresa | rol | años` (el empleo actual marcado con `now`). Flechas ↑ ↓ para elegir fila, Enter / tocar → abre la ficha de esa empresa. Sustituye al recorrido y a la tarjeta de la pantalla.
 - **Una empresa seleccionada en el carrusel**: igual que antes.
   - Izquierda: **recorrido dibujado con puntos blancos**, distinto para cada empresa (generado en código con una semilla fija para que siempre salga igual), con punto verde de salida y rojo de llegada. Al cambiar de empresa, el recorrido se redibuja punto a punto.
-  - Derecha, tarjeta resumen: imagen pequeña de cabecera (hueco provisional), `years:`, `role:`, `surfaces:` (ej. `research, flows, ui`).
+  - Derecha, tarjeta resumen: logo de la empresa como imagen pequeña de cabecera (en blanco), `years:`, `role:`, `surfaces:` (ej. `research, flows, ui`).
   - Enter / tocar → abre la **ficha** de esa empresa (ya no entra directo al case study).
 
 ### 4.4 Ficha de empresa (`#career/<empresa>`)
 - Migas: `career | <empresa>`.
 - Contenido, más completo que la tarjeta de la selección de tramo:
-  - Nombre de la empresa.
+  - Logo de la empresa (en blanco) y nombre.
   - **Evolución de cargos**: lista de `cargo · años`, del más reciente al más antiguo (si hubo un solo cargo, una fila).
   - **Descripción corta** (2–3 líneas).
   - **Resultado destacado**: etiqueta `highlight` y una frase con un resultado concreto.
