@@ -22,10 +22,13 @@ window.CONTENT = {
     options: ["about", "career", "contact"],
     intro: "" // short intro phrase above the carousel (one line). Empty = not shown; write it here when ready
   },
-  // About: all text is a visible placeholder until Ángel writes it. No skills or tools here.
+  // About: no skills or tools here. `statement` is the large title; `bio` is a list of paragraphs.
   about: {
-    statement: "pending: your presentation sentence",
-    bio: "pending: a short bio in two or three lines about who you are and how you work.",
+    statement: "Product designer. 8+ years across logistics, education and water management.",
+    bio: [
+      "Based in Pontevedra. I started designing warehouse software at Inditex and PcComponentes, moved on to an education LMS at Leemons, and now work on water management at Idrica. I like messy processes, talking to the people who use the tools, and turning both into something simple.",
+      "Outside work, I’m usually taking photos, eating at the nearest Mexican restaurant, or watching a film or whatever sport is on TV."
+    ],
     credit: {
       text: "design inspired by the menus of colin mcrae rally 2.0",
       href: "https://www.youtube.com/shorts/5o7MeaCYJ0E" // the whole line is the link; empty = plain text

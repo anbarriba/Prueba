@@ -8,7 +8,7 @@
 
     var text = el("div", { "class": "about-text" });
     text.appendChild(el("p", { "class": "about-statement" }, about.statement));
-    text.appendChild(el("p", { "class": "para" }, about.bio));
+    about.bio.forEach(function (paragraph) { text.appendChild(el("p", { "class": "para" }, paragraph)); });
 
     var figureBox = el("div", { "class": "figure-box" });
     root.appendChild(text); root.appendChild(figureBox);

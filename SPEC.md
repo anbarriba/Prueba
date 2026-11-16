@@ -59,7 +59,7 @@ Todo lo visual (color, tipografía, medidas, animaciones, móvil y límites) est
 - **Sin skills ni tools.** Todo el contenido, salvo la figura, es provisional y debe verse como hueco marcado (`pending`) hasta que Ángel lo escriba. Va en `data/content.js`.
 - Columna izquierda, de arriba abajo:
   - **Frase de presentación**, al estilo de un portfolio minimalista (una o dos líneas, grande).
-  - **Bio breve** (un párrafo).
+  - **Bio breve** (uno o dos párrafos).
 - Columna derecha: **figura de puntos** (silueta de persona, generada en código), a la manera de la pantalla de jugador del juego. Aparece punto a punto.
 - Al final, **línea de créditos**: `design inspired by the menus of colin mcrae rally 2.0`, toda ella un enlace subrayado con una flecha ↗ (como los enlaces externos de otros portfolios) a un vídeo de referencia en YouTube, para quien no conozca el juego. Se abre en pestaña nueva.
 - Esc → `#home`. No hay carrusel en esta pantalla.
@@ -151,7 +151,7 @@ Textos de referencia (del portfolio actual, angelbarreiro.framer.website):
 - [ ] Lista definitiva de secciones del case study y su contenido.
 - [ ] Imágenes: pantalla principal y detalles de cada proyecto.
 - [ ] Frase de presentación de inicio (vacía, no se muestra) y frase breve de contacto (hay texto provisional).
-- [ ] About: frase de presentación y bio.
+- [x] About: frase de presentación y bio.
 - [x] About: enlace de la línea de créditos.
 - [ ] Ficha de cada empresa: descripción corta, resultado destacado y cargos si hubo más de uno.
 
