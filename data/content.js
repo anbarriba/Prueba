@@ -94,7 +94,7 @@ window.CONTENT = {
     ]
   },
   contact: {
-    intro: "got a project in mind? let's talk.", // provisional text: Ángel will rewrite it
+    intro: "Open to new projects, a good chat, or a taco recommendation", // short phrase above the list (shown in lowercase)
     options: [
       { id: "email", label: "email", href: "mailto:angelbarreiroribadulla@gmail.com" },
       { id: "linkedin", label: "linkedin", href: "https://www.linkedin.com/in/angelbarreiro", newTab: true }
