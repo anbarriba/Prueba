@@ -159,7 +159,7 @@ Reglas:
 - En móvil puede ocupar dos líneas; no se recorta.
 
 ### 5.8 About
-- Dos columnas en escritorio: izquierda 55 % (frase de presentación; debajo, bio), derecha 45 % (figura de puntos). Línea de créditos al final, a todo el ancho del bloque.
+- Texto y figura forman un solo bloque en escritorio: el texto (frase de presentación y bio) a la izquierda, alineado con el margen, y la figura a su derecha a `4rem` de distancia, centrada en vertical respecto al texto. El bloque se centra en vertical en la zona disponible entre las migas y la línea de créditos. Línea de créditos al final.
 - Frase de presentación y bio (uno o dos párrafos): ver escala de §3. El contenido que falte se muestra como hueco marcado (`pending`).
 - Figura: persona (cabeza, hombros y cuerpo, sin más detalle) dibujada como un muñeco de matriz de puntos: rejilla gruesa de 9 columnas × 15 filas, puntos blancos (`--text`) de 8 px separados 18 px entre centros (6 px y 13 px en móvil), sin puntos de color. Sin marco. Decorativa (`aria-hidden="true"`). Dibujada desde cero, no extraída del juego.
 - Línea de créditos: una línea de `0.8125rem` que es toda ella un enlace (pestaña nueva) en `--text-dim`, subrayado (desplazado `0.2em`), seguido de una flecha ↗ de 1 px dibujada en SVG de `0.75em`. En hover pasa a `--text`. Si no hay enlace, se muestra el texto sin subrayar.
@@ -210,7 +210,7 @@ No:
 - **Línea de ayuda**: `swipe to choose, tap to confirm.`
 - **Migas**: si no caben, se muestran solo las dos últimas.
 - **Trayectoria**: recorrido arriba (alto máximo 40 vh), ficha debajo, carrusel abajo. `all stages`: la tabla pasa a dos columnas (empresa y años; el rol bajo el nombre de la empresa).
-- **About**: una columna: figura de puntos arriba (alto máximo 35 vh), luego frase de presentación, bio y créditos.
+- **About**: una columna: la figura arriba (más pequeña: puntos de 6 px a 13 px de paso), luego frase de presentación, bio y créditos.
 - **Frases breves**: sobre el carrusel (inicio) y sobre la lista (contacto), hasta dos líneas.
 - **Reglaje**:
   - Una columna. Orden: pestañas (con scroll horizontal si no caben), datos del proyecto, lista de secciones.

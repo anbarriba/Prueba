@@ -176,7 +176,9 @@ a { color: inherit; text-decoration: none; }
 
 /* About */
 .screen[data-screen="about"] { justify-content: flex-start; padding-top: 1rem; }
-.about { display: grid; grid-template-columns: minmax(0, 55fr) minmax(0, 45fr); grid-template-rows: auto 1fr; column-gap: 2rem; align-items: start; min-height: 100%; }
+.about { display: flex; flex-direction: column; min-height: 100%; }
+/* text and figure side by side, the block centred vertically between the breadcrumbs and the credit line */
+.about-main { flex: 1; display: flex; align-items: center; gap: 4rem; }
 .about-text { display: flex; flex-direction: column; gap: 1.5rem; }
 .about-statement { font-weight: 300; font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.2; max-width: 24ch; color: var(--text); }
 .label { font-size: 0.875rem; color: var(--text-dim); margin-bottom: -0.75rem; }
@@ -184,15 +186,15 @@ a { color: inherit; text-decoration: none; }
 .edu li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.75rem 0; border-top: 1px solid var(--line); font-size: 1rem; }
 .edu li:last-child { border-bottom: 1px solid var(--line); }
 .edu-years { color: var(--text-dim); white-space: nowrap; }
-.figure-box { position: relative; height: clamp(16rem, 55vh, 30rem); }
+.figure-box { position: relative; flex: none; }
 .figure { position: absolute; inset: 0; width: 100%; height: 100%; }
-.credit { grid-column: 1 / -1; align-self: end; margin-top: 2rem; padding-bottom: 0.5rem; font-size: 0.8125rem; color: var(--text-dim); }
+.credit { margin-top: 1rem; padding-bottom: 0.5rem; font-size: 0.8125rem; color: var(--text-dim); }
 .credit a { color: var(--text-dim); text-decoration: underline; text-underline-offset: 0.2em; }
 .credit a:hover { color: var(--text); }
 .ext { width: 0.75em; height: 0.75em; margin-left: 0.35em; }
 @media (max-width: 767px) {
-  .about { grid-template-columns: minmax(0, 1fr); row-gap: 1.5rem; }
-  .figure-box { order: -1; height: min(35vh, 18rem); }
+  .about-main { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 1.5rem; }
+  .figure-box { order: -1; } /* figure above the text */
 }
 
 /* Contact */

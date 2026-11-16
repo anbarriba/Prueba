@@ -11,7 +11,9 @@
     about.bio.forEach(function (paragraph) { text.appendChild(el("p", { "class": "para" }, paragraph)); });
 
     var figureBox = el("div", { "class": "figure-box" });
-    root.appendChild(text); root.appendChild(figureBox);
+    var main = el("div", { "class": "about-main" }); // text and figure form one block
+    main.appendChild(text); main.appendChild(figureBox);
+    root.appendChild(main);
 
     // credit line: the whole line is the link, with the external arrow; plain text while there is no link
     var credit = el("p", { "class": "credit" });
