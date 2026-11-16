@@ -46,6 +46,9 @@
         if (isTable) return;
         var c = companies[i - 1];
         name.textContent = c.name;
+        thumb.textContent = "";
+        thumb.classList.toggle("card-thumb--img", !!c.logo);
+        if (c.logo) { thumb.removeAttribute("role"); thumb.removeAttribute("aria-label"); thumb.appendChild(el("img", { src: c.logo.src, alt: c.logo.alt })); }
         dl.textContent = "";
         [["years", c.years], ["role", c.role], ["surfaces", c.surfaces]].forEach(function (r) {
           var row = el("div", { "class": "card-row" });
@@ -76,6 +79,7 @@
   function createFicha(container, company) {
     var root = el("div", { "class": "ficha" });
     var left = el("div", { "class": "ficha-left" });
+    if (company.logo) left.appendChild(el("img", { "class": "ficha-logo", src: company.logo.src, alt: company.logo.alt }));
     left.appendChild(el("p", { "class": "card-name" }, company.name));
     left.appendChild(el("p", { "class": "label" }, "roles"));
     var ul = el("ul", { "class": "edu" });

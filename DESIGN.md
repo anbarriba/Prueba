@@ -34,7 +34,7 @@ Reglas:
 - No hay modo oscuro ni claro: la web tiene un único tema. Declara `color-scheme: light`.
 - El texto blanco (`--text` / `--text-dim`) solo se usa en tamaños de 18 px o más, o en textos de una línea (migas, etiquetas, ayuda). Cualquier párrafo de más de una línea va en `--ink`. Única excepción: la frase de presentación de About (tamaño de 24 px o más) puede ocupar varias líneas en `--text`.
 - El número grande va en `--text` sobre `--box`, como en la referencia. Es decorativo-informativo: repite su valor en texto accesible (`aria-label` o texto oculto visualmente).
-- `--start` y `--finish` solo en esos dos puntos. Ningún otro elemento usa color.
+- `--start` y `--finish` solo en esos dos puntos. Ningún otro elemento usa color. Los logos de empresa se muestran como siluetas blancas (`--text`), sin sus colores de marca.
 
 ## 3. Tipografía
 
@@ -69,13 +69,13 @@ Escala (usa exactamente estos valores):
 | Etiqueta del número grande | Inter 400 | `0.875rem` | `--ink` |
 | Letras de la serpiente | Inter 400 | `10–14px`, variable por profundidad | `--text` |
 | Frase breve (inicio, contacto) | Inter 400 | `1rem` | `--text`, minúscula, una línea |
-| Frase de presentación (About) | Inter 300 | `clamp(1.5rem, 3vw, 2.5rem)` | `--text`, `line-height: 1.2`, `max-width: 24ch`, minúscula |
+| Frase de presentación (About) | Inter 300 | `clamp(1.5rem, 3vw, 2rem)` | `--text`, `line-height: 1.2`, `max-width: 24ch`, minúscula |
 | Bio (About) y descripción / resultado (ficha) | Inter 400 | `1rem` | igual que el párrafo de case study: `line-height: 1.5`, `max-width: 60ch`, `--ink` |
 | Fila de la tabla de tiempos (`all stages`) | Inter 400 | `1rem` | `font-variant-numeric: tabular-nums`; número y años en `--text-dim`, empresa y rol en `--text` si la fila está activa |
-| Línea de créditos (About) | Inter 400 | `0.8125rem` | `--text-dim`; el enlace en `--text` |
+| Línea de créditos (About) | Inter 400 | `0.8125rem` | toda la línea es un enlace en `--text-dim`, subrayado, con flecha ↗; en hover pasa a `--text` |
 
 Reglas:
-- Nada de mayúsculas sostenidas, cursivas ni subrayados (salvo foco de teclado).
+- Nada de mayúsculas sostenidas, cursivas ni subrayados (salvo foco de teclado y el enlace de la línea de créditos de About).
 - Solo los pesos indicados. No uses 700 de Inter.
 
 ## 4. Marco fijo (todas las pantallas)
@@ -139,7 +139,7 @@ Reglas:
 ### 5.4 Recorridos de trayectoria
 - Puntos blancos de 4 px (`--text`) separados entre sí 6 px a lo largo del trazado. Primer punto en `--start` y último en `--finish`, ambos de 6 px.
 - Cada empresa tiene un trazado distinto, generado con una semilla fija por empresa para que siempre sea el mismo.
-- Ficha a la derecha: imagen de cabecera de 160 × 40 px (hueco con borde 1 px en `--line` mientras no haya imagen), y debajo filas `etiqueta: valor`.
+- Ficha a la derecha: imagen de cabecera de 160 × 40 px (el logo de la empresa en blanco, contenido en la caja y alineado a la izquierda, sin borde; hueco con borde 1 px en `--line` si no hay logo), y debajo filas `etiqueta: valor`.
 
 ### 5.5 Pantalla de reglaje
 - Dos columnas en escritorio: izquierda 55 % (imagen principal arriba; debajo, fila con caja `--panel` y caja `--box` lado a lado; debajo, barra de escala; debajo, párrafo). Derecha 45 % (datos del proyecto arriba; lista de secciones debajo).
@@ -159,11 +159,10 @@ Reglas:
 - En móvil puede ocupar dos líneas; no se recorta.
 
 ### 5.8 About
-- Dos columnas en escritorio: izquierda 55 % (frase de presentación; debajo, bio; debajo, formación), derecha 45 % (figura de puntos). Línea de créditos al final, a todo el ancho del bloque.
-- Frase de presentación y bio: ver escala de §3. Todo el contenido salvo la figura es provisional y se muestra como hueco marcado (`pending`).
-- Formación: filas separadas por líneas finas de 1 px en `--line` (como 5.2, sin icono): `título · centro` a la izquierda y años a la derecha en `--text-dim`.
+- Dos columnas en escritorio: izquierda 55 % (frase de presentación; debajo, bio), derecha 45 % (figura de puntos). Línea de créditos al final, a todo el ancho del bloque.
+- Frase de presentación y bio (uno o dos párrafos): ver escala de §3. El contenido que falte se muestra como hueco marcado (`pending`).
 - Figura: silueta de persona hecha con puntos, con las medidas de los recorridos (5.4): puntos blancos de 4 px (`--text`), separados 6 px, sin puntos de color. Sin marco. Decorativa (`aria-hidden="true"`). Dibujada desde cero, no extraída del juego.
-- Línea de créditos: una línea en `--text-dim` de `0.8125rem` con el nombre del juego como texto plano y el enlace (en `--text`). Mientras el enlace esté pendiente, se muestra el texto sin enlace.
+- Línea de créditos: una línea de `0.8125rem` que es toda ella un enlace (pestaña nueva) en `--text-dim`, subrayado (desplazado `0.2em`), seguido de una flecha ↗ de 1 px dibujada en SVG de `0.75em`. En hover pasa a `--text`. Si no hay enlace, se muestra el texto sin subrayar.
 
 ### 5.9 Todas las etapas (tabla de tiempos)
 - Lista vertical (5.2) con columnas: número (`01`…), empresa, rol y años. Ancho máximo `40rem`. Filas de la más reciente a la más antigua; el empleo actual lleva `now` como años finales.
@@ -172,7 +171,7 @@ Reglas:
 
 ### 5.10 Ficha de empresa
 - Dos columnas en escritorio: izquierda 55 % (nombre de la empresa; evolución de cargos; descripción corta; resultado destacado), derecha 45 % (lista de case studies y `back`, con la lista vertical de 5.2).
-- Nombre: estilo de nombre de empresa en fichas (§3). Cargos: filas `cargo` y `años` con el estilo de etiquetas y datos de ficha, separadas por líneas de 1 px en `--line`, del más reciente al más antiguo.
+- Logo de la empresa arriba, en la misma caja de 160 × 40 px que la tarjeta de la selección de tramo, y debajo el nombre: estilo de nombre de empresa en fichas (§3). Cargos: filas `cargo` y `años` con el estilo de etiquetas y datos de ficha, separadas por líneas de 1 px en `--line`, del más reciente al más antiguo.
 - Descripción y resultado destacado: estilo de párrafo (§3). El resultado lleva encima la etiqueta `highlight` (Inter 400 `0.875rem`, `--text-dim`).
 - Móvil: una columna; primero cargos, descripción y resultado; debajo la lista de case studies.
 
@@ -211,7 +210,7 @@ No:
 - **Línea de ayuda**: `swipe to choose, tap to confirm.`
 - **Migas**: si no caben, se muestran solo las dos últimas.
 - **Trayectoria**: recorrido arriba (alto máximo 40 vh), ficha debajo, carrusel abajo. `all stages`: la tabla pasa a dos columnas (empresa y años; el rol bajo el nombre de la empresa).
-- **About**: una columna: figura de puntos arriba (alto máximo 35 vh), luego frase de presentación, bio, formación y créditos.
+- **About**: una columna: figura de puntos arriba (alto máximo 35 vh), luego frase de presentación, bio y créditos.
 - **Frases breves**: sobre el carrusel (inicio) y sobre la lista (contacto), hasta dos líneas.
 - **Reglaje**:
   - Una columna. Orden: pestañas (con scroll horizontal si no caben), datos del proyecto, lista de secciones.
@@ -240,7 +239,7 @@ Prohibido:
 - Copiar literalmente los textos de la interfaz del juego. Los textos de la web son propios (ej. `use the arrow keys to choose, press enter to confirm.`).
 
 Permitido:
-- En la línea de créditos de About: el nombre del juego (Colin McRae Rally 2.0) como texto plano con un enlace a una referencia pública, sin logos ni imágenes. También el nombre del piloto entre paréntesis tras la frase del easter egg, como atribución.
+- En la línea de créditos de About: el nombre del juego (Colin McRae Rally 2.0) en el texto del enlace a una referencia pública, sin logos ni imágenes. También el nombre del piloto entre paréntesis tras la frase del easter egg, como atribución.
 - La disposición general de las pantallas, el uso de minúsculas, el carrusel, los gráficos de puntos y letras dibujados desde cero, y la frase `if in doubt, flat out` en el easter egg como homenaje.
 
 Las capturas de referencia que tiene Ángel sirven solo para consultar el estilo. No las añadas al repositorio.

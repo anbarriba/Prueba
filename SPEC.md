@@ -4,7 +4,7 @@ Web personal de Ángel Barreiro, product designer. Estética inspirada en los me
 
 Idioma de la web: **inglés** (un selector de idioma queda para una versión futura).
 
-> Importante: es un homenaje de estilo. No usar logos, nombres, imágenes, sonidos ni otros recursos del juego original. Todo el contenido gráfico se genera en código (SVG/Canvas) o son imágenes del propio Ángel. Única excepción: la línea de créditos de About, que nombra el juego como texto plano con un enlace (ver 4.2 y `DESIGN.md` §9).
+> Importante: es un homenaje de estilo. No usar logos, nombres, imágenes, sonidos ni otros recursos del juego original. Todo el contenido gráfico se genera en código (SVG/Canvas) o son imágenes del propio Ángel. Única excepción: la línea de créditos de About, que nombra el juego en un enlace de texto (ver 4.2 y `DESIGN.md` §9).
 
 ---
 
@@ -59,10 +59,9 @@ Todo lo visual (color, tipografía, medidas, animaciones, móvil y límites) est
 - **Sin skills ni tools.** Todo el contenido, salvo la figura, es provisional y debe verse como hueco marcado (`pending`) hasta que Ángel lo escriba. Va en `data/content.js`.
 - Columna izquierda, de arriba abajo:
   - **Frase de presentación**, al estilo de un portfolio minimalista (una o dos líneas, grande).
-  - **Bio breve** (un párrafo).
-  - **Formación**: lista de filas `título · centro · años` (contenido pendiente).
+  - **Bio breve** (uno o dos párrafos).
 - Columna derecha: **figura de puntos** (silueta de persona, generada en código), a la manera de la pantalla de jugador del juego. Aparece punto a punto.
-- Al final, **línea de créditos**: indica que el diseño se inspira en Colin McRae Rally 2.0 y enlaza a una referencia para quien no conozca el juego. El enlace está pendiente (hueco visible, sin href real).
+- Al final, **línea de créditos**: `design inspired by the menus of colin mcrae rally 2.0`, toda ella un enlace subrayado con una flecha ↗ (como los enlaces externos de otros portfolios) a un vídeo de referencia en YouTube, para quien no conozca el juego. Se abre en pestaña nueva.
 - Esc → `#home`. No hay carrusel en esta pantalla.
 
 ### 4.3 Trayectoria (`#career`) — selección de tramo
@@ -71,13 +70,13 @@ Todo lo visual (color, tipografía, medidas, animaciones, móvil y límites) est
 - **`all stages`**: vista de lista con toda la experiencia de un vistazo, con estética de tabla de tiempos. Una fila por empresa, de la más reciente a la más antigua: `número | empresa | rol | años` (el empleo actual marcado con `now`). Flechas ↑ ↓ para elegir fila, Enter / tocar → abre la ficha de esa empresa. Sustituye al recorrido y a la tarjeta de la pantalla.
 - **Una empresa seleccionada en el carrusel**: igual que antes.
   - Izquierda: **recorrido dibujado con puntos blancos**, distinto para cada empresa (generado en código con una semilla fija para que siempre salga igual), con punto verde de salida y rojo de llegada. Al cambiar de empresa, el recorrido se redibuja punto a punto.
-  - Derecha, tarjeta resumen: imagen pequeña de cabecera (hueco provisional), `years:`, `role:`, `surfaces:` (ej. `research, flows, ui`).
+  - Derecha, tarjeta resumen: logo de la empresa como imagen pequeña de cabecera (en blanco), `years:`, `role:`, `surfaces:` (ej. `research, flows, ui`).
   - Enter / tocar → abre la **ficha** de esa empresa (ya no entra directo al case study).
 
 ### 4.4 Ficha de empresa (`#career/<empresa>`)
 - Migas: `career | <empresa>`.
 - Contenido, más completo que la tarjeta de la selección de tramo:
-  - Nombre de la empresa.
+  - Logo de la empresa (en blanco) y nombre.
   - **Evolución de cargos**: lista de `cargo · años`, del más reciente al más antiguo (si hubo un solo cargo, una fila).
   - **Descripción corta** (2–3 líneas).
   - **Resultado destacado**: etiqueta `highlight` y una frase con un resultado concreto.
@@ -152,8 +151,8 @@ Textos de referencia (del portfolio actual, angelbarreiro.framer.website):
 - [ ] Lista definitiva de secciones del case study y su contenido.
 - [ ] Imágenes: pantalla principal y detalles de cada proyecto.
 - [ ] Frase de presentación de inicio (vacía, no se muestra) y frase breve de contacto (hay texto provisional).
-- [ ] About: frase de presentación, bio y formación.
-- [ ] About: enlace de la línea de créditos a la referencia del juego.
+- [x] About: frase de presentación y bio.
+- [x] About: enlace de la línea de créditos.
 - [ ] Ficha de cada empresa: descripción corta, resultado destacado y cargos si hubo más de uno.
 
 ## Fuera de esta versión

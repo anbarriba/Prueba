@@ -22,40 +22,38 @@ window.CONTENT = {
     options: ["about", "career", "contact"],
     intro: "" // short intro phrase above the carousel (one line). Empty = not shown; write it here when ready
   },
-  // About: all text is a visible placeholder until Ángel writes it. No skills or tools here.
+  // About: no skills or tools here. `statement` is the large title; `bio` is a list of paragraphs.
   about: {
-    statement: "pending: your presentation sentence",
-    bio: "pending: a short bio in two or three lines about who you are and how you work.",
-    education: [
-      { title: "pending degree", school: "pending school", years: "pending" },
-      { title: "pending course", school: "pending school", years: "pending" }
+    statement: "Product designer. 8+ years across logistics, education and water management.",
+    bio: [
+      "Based in Pontevedra. I started designing warehouse software at Inditex and PcComponentes, moved on to an education LMS at Leemons, and now work on water management at Idrica. I like messy processes, talking to the people who use the tools, and turning both into something simple.",
+      "Outside work, I’m usually taking photos, eating at the nearest Mexican restaurant, watching a film or whatever sport is on TV."
     ],
     credit: {
-      text: "design inspired by the menus of colin mcrae rally 2.0, a rally game from 2000.",
-      linkLabel: "about the game",
-      href: "" // TODO: link to a public reference for the game
+      text: "design inspired by the menus of colin mcrae rally 2.0",
+      href: "https://www.youtube.com/shorts/5o7MeaCYJ0E" // the whole line is the link; empty = plain text
     }
   },
   career: {
     // Companies in reverse chronological order. Each project is one tab of the case-study screen.
-    // Images are placeholders until Ángel provides them: set `image.src` (and keep `alt`) to show one.
+    // Company logos are white silhouettes (assets/img/logos). Project images are placeholders until Ángel provides them: set `image.src` (and keep `alt`) to show one.
     // Section fields: point = where the guide line ends on the main image (% x, y);
     // big = label + value of the big number; fidelity = 0 (low-fi) .. 1 (hi-fi) for the scale marker.
     companies: [
       {
-        id: "idrica", name: "idrica", years: "2024 – now", role: "Product Designer", surfaces: "pending",
+        id: "idrica", name: "idrica", logo: { src: "assets/img/logos/idrica.png", alt: "idrica logo" }, years: "2024 – now", role: "Product Designer", surfaces: "pending",
         titles: [{ role: "Product Designer", years: "2024 – now" }],
         summary: "pending: a short description of the role and the product.", highlight: "pending: a standout result.",
         projects: [] // pending: Ángel will prepare the case studies
       },
       {
-        id: "leemons", name: "leemons", years: "2023 – 2024", role: "Product Designer", surfaces: "pending",
+        id: "leemons", name: "leemons", logo: { src: "assets/img/logos/leemons.png", alt: "leemons logo" }, years: "2023 – 2024", role: "Product Designer", surfaces: "pending",
         titles: [{ role: "Product Designer", years: "2023 – 2024" }],
         summary: "From wireframes to high-fidelity prototypes, user flows and stories, working with back, front and UI, and design QA after implementation.", highlight: "pending: a standout result.",
         projects: [] // pending: Ángel will prepare the case studies
       },
       {
-        id: "pccomponentes", name: "pccomponentes", years: "2021 – 2023", role: "Product Designer",
+        id: "pccomponentes", name: "pccomponentes", logo: { src: "assets/img/logos/pccomponentes.png", alt: "pccomponentes logo" }, years: "2021 – 2023", role: "Product Designer",
         surfaces: "research, flows, ui",
         titles: [{ role: "Product Designer", years: "2021 – 2023" }],
         summary: "Visual and flow redesign of the logistics apps (mobile and desktop), research with interviews and shadowing of employees, and support on the checkout experience.", highlight: "pending: a standout result.",
@@ -79,7 +77,7 @@ window.CONTENT = {
         ]
       },
       {
-        id: "inditex", name: "inditex", years: "2019 – 2021", role: "Junior Product Designer",
+        id: "inditex", name: "inditex", logo: { src: "assets/img/logos/inditex.svg", alt: "inditex logo" }, years: "2019 – 2021", role: "Junior Product Designer",
         surfaces: "mapping, ia, wireframes, ui",
         titles: [{ role: "Junior Product Designer", years: "2019 – 2021" }],
         summary: "Design of a WMS (warehouse management software): mapping, information architecture, wireframes, prototypes and interface on mobile and desktop, and collaboration on a design system.", highlight: "pending: a standout result.",
