@@ -60,7 +60,7 @@ Todo lo visual (color, tipografía, medidas, animaciones, móvil y límites) est
 - Columna izquierda, de arriba abajo:
   - **Frase de presentación**, al estilo de un portfolio minimalista (una o dos líneas, grande).
   - **Bio breve** (uno o dos párrafos).
-- Columna derecha: **figura de puntos** (silueta de persona, generada en código), a la manera de la pantalla de jugador del juego. Aparece punto a punto.
+- Columna derecha: **figura de puntos** (persona de matriz de puntos: pocos puntos grandes en una rejilla de 9 × 15, generada en código), a la manera de la pantalla de jugador del juego. Aparece punto a punto.
 - Al final, **línea de créditos**: `design inspired by the menus of colin mcrae rally 2.0`, toda ella un enlace subrayado con una flecha ↗ (como los enlaces externos de otros portfolios) a un vídeo de referencia en YouTube, para quien no conozca el juego. Se abre en pestaña nueva.
 - Esc → `#home`. No hay carrusel en esta pantalla.
 

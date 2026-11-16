@@ -161,7 +161,7 @@ Reglas:
 ### 5.8 About
 - Dos columnas en escritorio: izquierda 55 % (frase de presentación; debajo, bio), derecha 45 % (figura de puntos). Línea de créditos al final, a todo el ancho del bloque.
 - Frase de presentación y bio (uno o dos párrafos): ver escala de §3. El contenido que falte se muestra como hueco marcado (`pending`).
-- Figura: silueta de persona hecha con puntos, con las medidas de los recorridos (5.4): puntos blancos de 4 px (`--text`), separados 6 px, sin puntos de color. Sin marco. Decorativa (`aria-hidden="true"`). Dibujada desde cero, no extraída del juego.
+- Figura: persona (cabeza, hombros y cuerpo, sin más detalle) dibujada como un muñeco de matriz de puntos: rejilla gruesa de 9 columnas × 15 filas, puntos blancos (`--text`) de 8 px separados 18 px entre centros (6 px y 13 px en móvil), sin puntos de color. Sin marco. Decorativa (`aria-hidden="true"`). Dibujada desde cero, no extraída del juego.
 - Línea de créditos: una línea de `0.8125rem` que es toda ella un enlace (pestaña nueva) en `--text-dim`, subrayado (desplazado `0.2em`), seguido de una flecha ↗ de 1 px dibujada en SVG de `0.75em`. En hover pasa a `--text`. Si no hay enlace, se muestra el texto sin subrayar.
 
 ### 5.9 Todas las etapas (tabla de tiempos)
