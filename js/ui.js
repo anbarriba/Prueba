@@ -48,7 +48,12 @@
       var li = el("li"), a = el("a", { "class": "vrow", href: l.href });
       if (l.newTab) { a.target = "_blank"; a.rel = "noopener"; }
       a.appendChild(arrowIcon());
-      a.appendChild(el("span", { "class": "vlabel" }, l.label));
+      var label = el("span", { "class": "vlabel" }, l.label);
+      if (l.newTab) { // links that open elsewhere get the arrow
+        label.appendChild(externalArrow());
+        label.appendChild(el("span", { "class": "sr-only" }, " (opens in a new tab)"));
+      }
+      a.appendChild(label);
       a.addEventListener("focus", function () { active = i; paint(); });
       a.addEventListener("mouseenter", function () { active = i; paint(); });
       li.appendChild(a); ul.appendChild(li); rows.push(a);

@@ -100,9 +100,9 @@ Inspirada en la pantalla de reglaje del coche.
 ### 4.6 Contacto (`#contact`)
 - Migas: `angel barreiro | contact`.
 - **Frase breve** encima de la lista, una línea. Texto provisional (lo reescribe Ángel), en `data/content.js`.
-- Lista vertical: `email`, `linkedin`. Sin CV.
-  - email → `mailto:angelbarreiroribadulla@gmail.com`
-  - linkedin → https://www.linkedin.com/in/angelbarreiro (pestaña nueva)
+- Lista vertical: `angelbarreiroribadulla@gmail.com` y `linkedin ↗`. Sin CV.
+  - la fila de email muestra la dirección completa y abre `mailto:angelbarreiroribadulla@gmail.com`
+  - `linkedin ↗` → https://www.linkedin.com/in/angelbarreiro (pestaña nueva)
 - **Sin ilustración**: la pantalla queda limpia, solo frase y lista.
 
 ## 5. La serpiente de letras

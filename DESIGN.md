@@ -113,7 +113,7 @@ Reglas:
 | Caja amarilla con dibujo de la pieza | Caja `--panel` con imagen de detalle de la sección | Reglaje |
 | `adjustment time` + número grande | Etiqueta + dato clave de la sección | Reglaje |
 | Barra `soft` ↔ `hard` | Barra `low-fi` ↔ `hi-fi` con marcador | Reglaje |
-| Lista vertical de submenú (icono de flecha en caja) | Lista `email \| linkedin` | Contacto |
+| Lista vertical de submenú (icono de flecha en caja) | Lista con el email y `linkedin ↗` | Contacto |
 | Migas, `time`, línea de ayuda | Igual, con textos propios | Todas |
 
 ### 5.1 Carrusel horizontal
@@ -147,7 +147,7 @@ Reglas:
 - Barra de escala: alto 12 px, fondo `--box`, marcador de 24 × 12 px en `--ink`. Etiquetas `low-fi` y `hi-fi` en los extremos, debajo.
 
 ### 5.6 Contacto
-- Frase breve (5.7) encima de una lista vertical (5.2) con `email` y `linkedin`, alineada con el margen izquierdo del bloque central, el conjunto verticalmente centrado.
+- Frase breve (5.7) encima de una lista vertical (5.2) con la dirección de email completa y `linkedin ↗` (el mismo estilo de flecha externa que el enlace de créditos de About), alineada con el margen izquierdo del bloque central, el conjunto verticalmente centrado.
 - Sin ilustración: ni sobre ni serpiente en esta pantalla. No añadas formularios.
 
 ### 5.7 Frase breve (inicio y contacto)

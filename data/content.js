@@ -96,7 +96,7 @@ window.CONTENT = {
   contact: {
     intro: "Open to new projects, a good chat, or a taco recommendation", // short phrase above the list (shown in lowercase)
     options: [
-      { id: "email", label: "email", href: "mailto:angelbarreiroribadulla@gmail.com" },
+      { id: "email", label: "angelbarreiroribadulla@gmail.com", href: "mailto:angelbarreiroribadulla@gmail.com" }, // the row shows the address itself
       { id: "linkedin", label: "linkedin", href: "https://www.linkedin.com/in/angelbarreiro", newTab: true }
     ]
   },
