@@ -69,7 +69,7 @@ Escala (usa exactamente estos valores):
 | Etiqueta del número grande | Inter 400 | `0.875rem` | `--ink` |
 | Letras de la serpiente | Inter 400 | `10–14px`, variable por profundidad | `--text` |
 | Frase breve (inicio, contacto) | Inter 400 | `1rem` | `--text`, minúscula, una línea |
-| Frase de presentación (About) | Inter 300 | `clamp(1.5rem, 3vw, 2.5rem)` | `--text`, `line-height: 1.2`, `max-width: 24ch`, minúscula |
+| Frase de presentación (About) | Inter 300 | `clamp(1.5rem, 3vw, 2rem)` | `--text`, `line-height: 1.2`, `max-width: 24ch`, minúscula |
 | Bio (About) y descripción / resultado (ficha) | Inter 400 | `1rem` | igual que el párrafo de case study: `line-height: 1.5`, `max-width: 60ch`, `--ink` |
 | Fila de la tabla de tiempos (`all stages`) | Inter 400 | `1rem` | `font-variant-numeric: tabular-nums`; número y años en `--text-dim`, empresa y rol en `--text` si la fila está activa |
 | Línea de créditos (About) | Inter 400 | `0.8125rem` | toda la línea es un enlace en `--text-dim`, subrayado, con flecha ↗; en hover pasa a `--text` |
