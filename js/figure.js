@@ -22,20 +22,18 @@
     ".#######.",
     ".#######."
   ];
-  var DOT = 8, PITCH = 18;           // dot diameter and distance between dot centres, in px (the career routes use 4 px dots)
-  var DOT_SMALL = 6, PITCH_SMALL = 13; // the same on small screens
+  var DOT_RATIO = 0.44; // dot diameter as a fraction of the distance between dot centres (so the dots stay big, with a visible gap)
   var DRAW_MS = 500;  // the whole figure appears in this time, point by point (top to bottom)
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  var small = window.matchMedia("(max-width: 767px)");
 
   // A canvas inside `container` that draws the dotted figure and fills it in point by point.
-  // The container takes the size of the figure.
-  function create(container) {
+  // The figure is as tall as `heightOf()` says (in px) and the container takes its size; call relayout() when that changes.
+  function create(container, heightOf) {
     var canvas = document.createElement("canvas");
     canvas.className = "figure";
     canvas.setAttribute("aria-hidden", "true");
     container.appendChild(canvas);
-    var ctx = canvas.getContext("2d"), pts = [], w = 0, h = 0, dot = DOT, dpr = 1, t0 = 0, raf = 0, dead = false;
+    var ctx = canvas.getContext("2d"), pts = [], w = 0, h = 0, dot = 0, current = 1, dpr = 1, t0 = 0, raf = 0, dead = false; // current: how much of the figure is drawn (0..1)
     var color = getComputedStyle(document.documentElement).getPropertyValue("--text").trim() || "#fff";
 
     function draw(progress) {
@@ -47,13 +45,13 @@
     }
     function frame(now) {
       if (dead) return;
-      var p = Math.min(1, (now - t0) / DRAW_MS);
+      var p = current = Math.min(1, (now - t0) / DRAW_MS);
       draw(p);
       raf = p < 1 ? requestAnimationFrame(frame) : 0;
     }
     function layout() {
-      var pitch = small.matches ? PITCH_SMALL : PITCH;
-      dot = small.matches ? DOT_SMALL : DOT;
+      var pitch = heightOf() / (GRID.length - 1 + DOT_RATIO);
+      dot = pitch * DOT_RATIO;
       w = (GRID[0].length - 1) * pitch + dot; h = (GRID.length - 1) * pitch + dot;
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       container.style.width = w + "px"; container.style.height = h + "px";
@@ -62,17 +60,17 @@
       GRID.forEach(function (row, r) {
         for (var c = 0; c < row.length; c++) if (row.charAt(c) === "#") pts.push([dot / 2 + c * pitch, dot / 2 + r * pitch]);
       });
-      draw(1);
+      draw(current);
     }
 
-    small.addEventListener && small.addEventListener("change", layout);
+    if (!reduce.matches) current = 0;
     layout();
-    if (!reduce.matches) { draw(0); t0 = performance.now(); raf = requestAnimationFrame(frame); }
+    if (!reduce.matches) { t0 = performance.now(); raf = requestAnimationFrame(frame); }
 
     return {
+      relayout: layout,
       destroy: function () {
         dead = true; cancelAnimationFrame(raf);
-        small.removeEventListener && small.removeEventListener("change", layout);
         if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
       }
     };
