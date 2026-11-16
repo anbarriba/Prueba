@@ -105,7 +105,8 @@ window.CONTENT = {
     keys: "use the arrow keys to choose, press enter to confirm.",
     touch: "swipe to choose, tap to confirm.",
     sheet: { keys: "↑ ↓ choose a section, ← → switch project, esc to go back.", touch: "tap a section to open it." },
-    list: { keys: "↑ ↓ choose, enter to open, esc to go back.", touch: "tap an option to open it." }
+    list: { keys: "↑ ↓ choose, enter to open, esc to go back.", touch: "tap an option to open it." },
+    about: { keys: "esc to go back.", touch: "tap angel barreiro to go back." } // nothing to choose on this screen
   }
 };
 })();

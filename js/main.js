@@ -136,7 +136,7 @@
         carousel: { label: "main menu", labels: C.home.options, go: function (i) { return "#" + C.home.options[i]; } } };
     }
     if (name === "about" && parts.length === 1) {
-      return { name: "about", crumbs: [{ label: C.site.name, href: "#home" }, { label: "about" }], up: "#home", links: [] };
+      return { name: "about", crumbs: [{ label: C.site.name, href: "#home" }, { label: "about" }], up: "#home", links: [], help: C.help.about };
     }
     if (name === "contact" && parts.length === 1) {
       return { name: "contact", crumbs: [{ label: C.site.name, href: "#home" }, { label: "contact" }], up: "#home",

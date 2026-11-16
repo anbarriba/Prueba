@@ -95,7 +95,7 @@ Reglas:
 - Márgenes laterales: `clamp(1rem, 3vw, 2.5rem)`. Margen superior: `clamp(1rem, 3vh, 2rem)` + zona segura.
 - Migas: arriba a la izquierda, separadas por una barra vertical de 1 px en `--line` con `0.5rem` de espacio a cada lado.
 - Cronómetro: arriba a la derecha, formato `mm:ss.cc`. Se reinicia a `00:00.00` al entrar en cada pantalla y corre siempre.
-- Línea de ayuda: centrada horizontalmente con el bloque de contenido, justo bajo el carrusel o la lista.
+- Línea de ayuda: centrada horizontalmente con el bloque de contenido, justo bajo el carrusel o la lista. Cada pantalla puede tener su propio texto según lo que se pueda hacer en ella (p. ej. About, donde no hay nada que elegir: `esc to go back.`; en móvil, `tap angel barreiro to go back.`).
 - Texto de build: abajo a la izquierda, muy pequeño.
 
 ## 5. Traducción de cada elemento del juego
