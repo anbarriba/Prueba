@@ -1,26 +1,26 @@
 // The person on the About screen, in the style of a dot-matrix figure: a coarse grid of big dots, drawn from scratch.
-// The home snake uses a smooth outline of a similar bust (OUTLINE, in an arbitrary 100 x 120 box) when "about" is selected.
+// The home snake uses a smooth outline of a bust (OUTLINE, in an arbitrary 100 x 120 box) when "about" is selected.
 (function () {
   "use strict";
 
   var OUTLINE = "M8,118 L8,92 C8,78 22,70 38,64 L41,57 A22,22 0 1 1 59,57 L62,64 C78,70 92,78 92,92 L92,118 Z";
-  // 9 columns x 15 rows: head, shoulders and body, nothing more. "#" = a dot.
+  // 9 columns x 15 rows: a full-body figure with head, arms, body and two separate legs. "#" = a dot.
   var GRID = [
     "...###...",
-    "..#####..",
     "..#####..",
     "..#####..",
     "...###...",
     ".........",
     ".#######.",
-    "#########",
-    "#########",
-    ".#######.",
-    ".#######.",
-    ".#######.",
-    ".#######.",
-    ".#######.",
-    ".#######."
+    "#.#####.#",
+    "#.#####.#",
+    "#.#####.#",
+    "#.#####.#",
+    "..#####..",
+    "..##.##..",
+    "..##.##..",
+    "..##.##..",
+    "..##.##.."
   ];
   var DOT_RATIO = 0.44; // dot diameter as a fraction of the distance between dot centres (so the dots stay big, with a visible gap)
   var DRAW_MS = 500;  // the whole figure appears in this time, point by point (top to bottom)
