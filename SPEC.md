@@ -57,10 +57,10 @@ Todo lo visual (color, tipografía, medidas, animaciones, móvil y límites) est
 ### 4.2 About (`#about`)
 - Migas: `angel barreiro | about`.
 - **Sin skills ni tools.** Todo el contenido, salvo la figura, es provisional y debe verse como hueco marcado (`pending`) hasta que Ángel lo escriba. Va en `data/content.js`.
-- Texto y figura forman un solo bloque, centrado en vertical entre las migas y la línea de créditos. Texto a la izquierda, de arriba abajo:
+- Dos columnas, centradas en vertical entre las migas y la línea de créditos. Izquierda, de arriba abajo:
   - **Frase de presentación**, al estilo de un portfolio minimalista (una o dos líneas, grande).
   - **Bio breve** (uno o dos párrafos).
-- A su derecha, cerca del texto: **figura de puntos** (persona de matriz de puntos: pocos puntos grandes en una rejilla de 9 × 15, generada en código), a la manera de la pantalla de jugador del juego. Aparece punto a punto.
+- Derecha, separada del texto: **figura de puntos** (muñeco de cuerpo entero con cabeza, brazos, cuerpo y dos piernas, de matriz de puntos: pocos puntos grandes en una rejilla de 9 × 15, generada en código), a la manera de la pantalla de jugador del juego. Mide lo mismo que el bloque de texto y está alineada con él. Aparece punto a punto.
 - Al final, **línea de créditos**: `design inspired by the menus of colin mcrae rally 2.0`, toda ella un enlace subrayado con una flecha ↗ (como los enlaces externos de otros portfolios) a un vídeo de referencia en YouTube, para quien no conozca el juego. Se abre en pestaña nueva.
 - Esc → `#home`. No hay carrusel en esta pantalla.
 

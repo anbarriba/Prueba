@@ -16,7 +16,6 @@ function project(id, info, sections) {
   };
 }
 window.CONTENT = {
-  build: "ab portfolio build 1 (nov 2026)",
   site: { name: "angel barreiro", role: "product designer" },
   home: {
     options: ["about", "career", "contact"],

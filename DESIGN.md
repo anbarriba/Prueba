@@ -61,7 +61,6 @@ Escala (usa exactamente estos valores):
 | Cronómetro: etiqueta `time` | Inter 600 | `0.875rem` | `--text` |
 | Cronómetro: cifras | Doto 700 | `1rem` | `--text-dim`, `font-variant-numeric: tabular-nums` |
 | Línea de ayuda | Inter 600 | `0.8125rem` | `--text-dim` |
-| Texto de build (abajo izq.) | Inter 400 | `0.6875rem` | `--text-dim` |
 | Nombre de empresa / proyecto en fichas | Inter 600 | `1.125rem` | `--text` |
 | Etiquetas y datos de ficha | Inter 400 | `0.875rem` | etiqueta en `--text-dim`, valor en `--text` |
 | Párrafo de case study | Inter 400 | `1rem` | `line-height: 1.5`, `max-width: 60ch`, color `--ink` |
@@ -88,7 +87,6 @@ Reglas:
 │                                                          │
 │ palabra | palabra | ACTIVA | palabra | palabra | pala…   │
 │      use the arrow keys to choose, press enter to confirm. │
-│ ab portfolio build 1 (nov 2026)                          │
 └──────────────────────────────────────────────────────────┘
 ```
 
@@ -96,7 +94,6 @@ Reglas:
 - Migas: arriba a la izquierda, separadas por una barra vertical de 1 px en `--line` con `0.5rem` de espacio a cada lado.
 - Cronómetro: arriba a la derecha, formato `mm:ss.cc`. Se reinicia a `00:00.00` al entrar en cada pantalla y corre siempre.
 - Línea de ayuda: centrada horizontalmente con el bloque de contenido, justo bajo el carrusel o la lista. Cada pantalla puede tener su propio texto según lo que se pueda hacer en ella (p. ej. About, donde no hay nada que elegir: `esc to go back.`; en móvil, `tap angel barreiro to go back.`).
-- Texto de build: abajo a la izquierda, muy pequeño.
 
 ## 5. Traducción de cada elemento del juego
 
@@ -108,7 +105,7 @@ Reglas:
 | Carrusel de tramos `one \| two \| three…` | Carrusel `all stages \| idrica \| leemons \| pccomponentes \| inditex` | Trayectoria |
 | Tabla de tiempos | `all stages`: lista de toda la experiencia, una fila por empresa | Trayectoria |
 | Ficha del tramo | Ficha de empresa: cargos, descripción y resultado destacado | Ficha |
-| Pantalla de jugador con figura de puntos | About: silueta de puntos dibujada desde cero | About |
+| Pantalla de jugador con figura de puntos | About: muñeco de cuerpo entero de matriz de puntos dibujado desde cero | About |
 | Pantalla de reglaje del coche | Case study de cada empresa/proyecto | Reglaje |
 | Pestañas `information \| set up \| repair…` | Un proyecto por pestaña + `back` | Reglaje |
 | Coche con líneas que señalan las piezas | Pantalla clave del proyecto con líneas guía al punto de la sección activa | Reglaje |
@@ -159,9 +156,9 @@ Reglas:
 - En móvil puede ocupar dos líneas; no se recorta.
 
 ### 5.8 About
-- Texto y figura forman un solo bloque en escritorio: el texto (frase de presentación y bio) a la izquierda, alineado con el margen, y la figura a su derecha a `4rem` de distancia, centrada en vertical respecto al texto. El bloque se centra en vertical en la zona disponible entre las migas y la línea de créditos. Línea de créditos al final.
+- Dos columnas en escritorio: izquierda 55 % (frase de presentación y bio, alineadas con el margen), derecha 45 % (figura, centrada en su columna y separada del texto). La figura mide lo mismo que el bloque de texto (de la frase grande al final de la bio) y está alineada con él en vertical. El conjunto se centra en vertical en la zona disponible entre las migas y la línea de créditos. Línea de créditos al final.
 - Frase de presentación y bio (uno o dos párrafos): ver escala de §3. El contenido que falte se muestra como hueco marcado (`pending`).
-- Figura: persona (cabeza, hombros y cuerpo, sin más detalle) dibujada como un muñeco de matriz de puntos: rejilla gruesa de 9 columnas × 15 filas, puntos blancos (`--text`) de 8 px separados 18 px entre centros (6 px y 13 px en móvil), sin puntos de color. Sin marco. Decorativa (`aria-hidden="true"`). Dibujada desde cero, no extraída del juego.
+- Figura: muñeco de cuerpo entero (cabeza, brazos, cuerpo y dos piernas separadas, sin más detalle) de matriz de puntos: rejilla gruesa de 9 columnas × 15 filas, puntos blancos (`--text`), sin puntos de color. El tamaño de los puntos sale de la altura: el diámetro es 0,44 veces la distancia entre centros, y esa distancia se calcula para que la figura completa mida la altura del bloque de texto (en un escritorio de 1440 px, unos 9 px de diámetro a 21 px de distancia). Sin marco. Decorativa (`aria-hidden="true"`). Dibujada desde cero, no extraída del juego.
 - Línea de créditos: una línea de `0.8125rem` que es toda ella un enlace (pestaña nueva) en `--text-dim`, subrayado (desplazado `0.2em`), seguido de una flecha ↗ de 1 px dibujada en SVG de `0.75em`. En hover pasa a `--text`. Si no hay enlace, se muestra el texto sin subrayar.
 
 ### 5.9 Todas las etapas (tabla de tiempos)
@@ -210,7 +207,7 @@ No:
 - **Línea de ayuda**: `swipe to choose, tap to confirm.`
 - **Migas**: si no caben, se muestran solo las dos últimas.
 - **Trayectoria**: recorrido arriba (alto máximo 40 vh), ficha debajo, carrusel abajo. `all stages`: la tabla pasa a dos columnas (empresa y años; el rol bajo el nombre de la empresa).
-- **About**: una columna: la figura arriba (más pequeña: puntos de 6 px a 13 px de paso), luego frase de presentación, bio y créditos.
+- **About**: una columna: la figura arriba, más pequeña (170 px de alto, con los mismos puntos proporcionales), luego frase de presentación, bio y créditos.
 - **Frases breves**: sobre el carrusel (inicio) y sobre la lista (contacto), hasta dos líneas.
 - **Reglaje**:
   - Una columna. Orden: pestañas (con scroll horizontal si no caben), datos del proyecto, lista de secciones.

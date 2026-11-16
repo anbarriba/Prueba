@@ -8,8 +8,6 @@
   var timerEl = document.getElementById("timer");
   var coarse = window.matchMedia("(max-width: 767px), (pointer: coarse)");
 
-  document.getElementById("build").textContent = C.build;
-
   // ---------- infinite carousel ----------
   // Words are rendered in an odd number of identical copies; `pos` is an absolute
   // index into that sequence. The track is only ever moved by CSS transform and,
