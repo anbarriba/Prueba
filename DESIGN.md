@@ -32,7 +32,7 @@ Define estos valores como variables CSS en `:root` y usa solo variables en el re
 
 Reglas:
 - No hay modo oscuro ni claro: la web tiene un único tema. Declara `color-scheme: light`.
-- El texto blanco (`--text` / `--text-dim`) solo se usa en tamaños de 18 px o más, o en textos de una línea (migas, etiquetas, ayuda). Cualquier párrafo de más de una línea va en `--ink`. Única excepción: la frase de presentación de About (tamaño de 24 px o más) puede ocupar varias líneas en `--text`.
+- El texto blanco (`--text` / `--text-dim`) solo se usa en tamaños de 18 px o más, o en textos de una línea (migas, etiquetas, ayuda). Cualquier párrafo de más de una línea va en `--ink`. Única excepción: el titular de las pantallas de texto (about y contact, tamaño de 24 px o más) puede ocupar varias líneas en `--text`.
 - El número grande va en `--text` sobre `--box`, como en la referencia. Es decorativo-informativo: repite su valor en texto accesible (`aria-label` o texto oculto visualmente).
 - `--start` y `--finish` solo en esos dos puntos. Ningún otro elemento usa color. Los logos de empresa se muestran como siluetas blancas (`--text`), sin sus colores de marca.
 
@@ -67,9 +67,9 @@ Escala (usa exactamente estos valores):
 | Número grande | Doto 700 | `clamp(3rem, 7vw, 4.5rem)` | `--text` sobre `--box` |
 | Etiqueta del número grande | Inter 400 | `0.875rem` | `--ink` |
 | Letras de la serpiente | Inter 400 | `10–14px`, variable por profundidad | `--text` |
-| Frase breve (inicio, contacto) | Inter 400 | `1rem` | `--text`, minúscula, una línea |
-| Frase de presentación (About) | Inter 300 | `clamp(1.5rem, 3vw, 2rem)` | `--text`, `line-height: 1.2`, `max-width: 24ch`, minúscula |
-| Bio (About) y descripción / resultado (ficha) | Inter 400 | `1rem` | igual que el párrafo de case study: `line-height: 1.5`, `max-width: 60ch`, `--ink` |
+| Frase breve (inicio) | Inter 400 | `1rem` | `--text`, minúscula, una línea |
+| Titular (about, contact) | Inter 300 | `clamp(1.5rem, 3vw, 2rem)` | `--text`, `line-height: 1.2`, `max-width: 24ch`, minúscula |
+| Texto normal (about, contact) y descripción / resultado (ficha) | Inter 400 | `1rem` | igual que el párrafo de case study: `line-height: 1.5`, `max-width: 60ch`, `--ink` |
 | Fila de la tabla de tiempos (`all stages`) | Inter 400 | `1rem` | `font-variant-numeric: tabular-nums`; número y años en `--text-dim`, empresa y rol en `--text` si la fila está activa |
 | Línea de créditos (About) | Inter 400 | `0.8125rem` | toda la línea es un enlace en `--text-dim`, subrayado, con flecha ↗; en hover pasa a `--text` |
 
@@ -146,18 +146,27 @@ Reglas:
 - Caja `--box`: misma altura que la caja `--panel`; etiqueta arriba, número centrado.
 - Barra de escala: alto 12 px, fondo `--box`, marcador de 24 × 12 px en `--ink`. Etiquetas `low-fi` y `hi-fi` en los extremos, debajo.
 
+### 5.6.1 Plantilla de pantallas de texto (about y contact)
+Las dos pantallas comparten estructura, tamaños y estilos:
+1. **Titular grande**: Inter 300, `clamp(1.5rem, 3vw, 2rem)` (32 px en escritorio ancho), `line-height: 1.2`, `max-width: 24ch`, `--text`, minúscula.
+2. **Texto normal** debajo: Inter 400 `1rem`, `line-height: 1.5`, `max-width: 60ch`, `--ink`, respetando las mayúsculas del texto. Separación de `1.5rem` con el titular.
+3. **Contenido propio de la pantalla** debajo del texto: la lista de email y linkedin en contact. En about, la figura va en la columna derecha (5.8).
+4. **Línea al pie**: en about, los créditos; en contact reserva el mismo hueco vacío, para que las dos pantallas tengan la misma altura útil.
+
+**Posición vertical**: el titular empieza exactamente a la misma altura en las dos pantallas, para que el contenido no salte al cambiar de una a otra. La referencia es About: su bloque (titular + texto) se centra en vertical entre las migas y el pie. Contact da a su bloque la misma altura que el bloque de texto de About (se mide con los mismos estilos y el mismo ancho de columna), así que el titular queda en el mismo punto a cualquier tamaño de pantalla de escritorio. En móvil (< 768 px) el bloque empieza arriba, sin centrar.
+
 ### 5.6 Contacto
-- Frase breve (5.7) encima de una lista vertical (5.2) con la dirección de email completa y `linkedin ↗` (el mismo estilo de flecha externa que el enlace de créditos de About). Frase y lista se separan `2rem` para que se lean como dos bloques. Todo alineado con el margen izquierdo del bloque central y el conjunto verticalmente centrado.
+- Sigue la plantilla de pantallas de texto (5.6.1). Titular (`let's talk.`, provisional), debajo el texto normal (`Open to new projects, a good chat, or a taco recommendation`) y debajo la lista vertical (5.2) con la dirección de email completa y `linkedin ↗` (el mismo estilo de flecha externa que el enlace de créditos de About). Entre el texto y la lista hay `2rem` para que se lean como dos bloques.
 - Sin ilustración: ni sobre ni serpiente en esta pantalla. No añadas formularios.
 
-### 5.7 Frase breve (inicio y contacto)
+### 5.7 Frase breve (inicio)
 - Una línea, Inter 400 `1rem`, `--text`, minúscula, texto provisional.
-- Inicio: justo encima del carrusel, con su inicio alineado con la palabra activa (a un tercio del ancho). Contacto: encima de la lista, alineada con su margen izquierdo.
+- Justo encima del carrusel, con su inicio alineado con la palabra activa (a un tercio del ancho).
 - En móvil puede ocupar dos líneas; no se recorta.
 
 ### 5.8 About
 - Dos columnas en escritorio: izquierda 55 % (frase de presentación y bio, alineadas con el margen), derecha 45 % (figura, centrada en su columna y separada del texto). La figura mide lo mismo que el bloque de texto (de la frase grande al final de la bio) y está alineada con él en vertical. El conjunto se centra en vertical en la zona disponible entre las migas y la línea de créditos. Línea de créditos al final.
-- Frase de presentación y bio (uno o dos párrafos): ver escala de §3. El contenido que falte se muestra como hueco marcado (`pending`).
+- Sigue la plantilla de pantallas de texto (5.6.1): el titular es la frase de presentación y el texto normal es la bio (uno o dos párrafos). El contenido que falte se muestra como hueco marcado (`pending`).
 - Figura: muñeco de cuerpo entero (cabeza, brazos, cuerpo y dos piernas separadas, sin más detalle) de matriz de puntos: rejilla gruesa de 9 columnas × 15 filas, puntos blancos (`--text`), sin puntos de color. El tamaño de los puntos sale de la altura: el diámetro es 0,44 veces la distancia entre centros, y esa distancia se calcula para que la figura completa mida la altura del bloque de texto (en un escritorio de 1440 px, unos 9 px de diámetro a 21 px de distancia). Sin marco. Decorativa (`aria-hidden="true"`). Dibujada desde cero, no extraída del juego.
 - Línea de créditos: una línea de `0.8125rem` que es toda ella un enlace (pestaña nueva) en `--text-dim`, subrayado (desplazado `0.2em`), seguido de una flecha ↗ de 1 px dibujada en SVG de `0.75em`. En hover pasa a `--text`. Si no hay enlace, se muestra el texto sin subrayar.
 

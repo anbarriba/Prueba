@@ -98,8 +98,10 @@ Inspirada en la pantalla de reglaje del coche.
 - Esc → ficha de la empresa.
 
 ### 4.6 Contacto (`#contact`)
+Sigue la misma plantilla que About: titular, texto normal debajo, y debajo la lista. El titular empieza a la misma altura que el de About (ver `DESIGN.md` 5.6.1).
 - Migas: `angel barreiro | contact`.
-- **Frase breve** encima de la lista, una línea. Texto provisional (lo reescribe Ángel), en `data/content.js`.
+- **Titular**: `let's talk.` (provisional, en `contact.headline` de `data/content.js`).
+- **Texto normal** bajo el titular: `Open to new projects, a good chat, or a taco recommendation` (`contact.intro`).
 - Lista vertical: `angelbarreiroribadulla@gmail.com` y `linkedin ↗`. Sin CV.
   - la fila de email muestra la dirección completa y abre `mailto:angelbarreiroribadulla@gmail.com`
   - `linkedin ↗` → https://www.linkedin.com/in/angelbarreiro (pestaña nueva)
