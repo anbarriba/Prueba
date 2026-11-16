@@ -199,7 +199,7 @@ a { color: inherit; text-decoration: none; }
 
 /* Contact */
 .screen[data-screen="contact"] { justify-content: center; }
-.contact-intro { font-size: 1rem; color: var(--text); padding-bottom: 1rem; }
+.contact-intro { font-size: 1rem; color: var(--text); padding-bottom: 2rem; }
 a.vrow { text-decoration: none; }
 
 .help { text-align: center; font-weight: 600; font-size: 0.8125rem; color: var(--text-dim); padding: 0.75rem 0; }

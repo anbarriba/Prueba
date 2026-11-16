@@ -147,7 +147,7 @@ Reglas:
 - Barra de escala: alto 12 px, fondo `--box`, marcador de 24 × 12 px en `--ink`. Etiquetas `low-fi` y `hi-fi` en los extremos, debajo.
 
 ### 5.6 Contacto
-- Frase breve (5.7) encima de una lista vertical (5.2) con la dirección de email completa y `linkedin ↗` (el mismo estilo de flecha externa que el enlace de créditos de About), alineada con el margen izquierdo del bloque central, el conjunto verticalmente centrado.
+- Frase breve (5.7) encima de una lista vertical (5.2) con la dirección de email completa y `linkedin ↗` (el mismo estilo de flecha externa que el enlace de créditos de About). Frase y lista se separan `2rem` para que se lean como dos bloques. Todo alineado con el margen izquierdo del bloque central y el conjunto verticalmente centrado.
 - Sin ilustración: ni sobre ni serpiente en esta pantalla. No añadas formularios.
 
 ### 5.7 Frase breve (inicio y contacto)
