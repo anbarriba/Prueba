@@ -174,13 +174,15 @@ a { color: inherit; text-decoration: none; }
   .tt .tt-n { grid-area: n; } .tt .icon { grid-area: i; } .tt .tt-co { grid-area: c; } .tt .tt-role { grid-area: r; font-size: 0.875rem; } .tt .tt-years { grid-area: y; }
 }
 
-/* About */
-.screen[data-screen="about"] { justify-content: flex-start; padding-top: 1rem; }
-.about { display: flex; flex-direction: column; min-height: 100%; }
-/* text on the left and the figure on the right, both centred vertically between the breadcrumbs and the credit line */
-.about-main { flex: 1; display: grid; grid-template-columns: minmax(0, 55fr) minmax(0, 45fr); column-gap: 2rem; align-items: center; }
-.about-text { display: flex; flex-direction: column; gap: 1.5rem; }
-.about-statement { font-weight: 300; font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.2; max-width: 24ch; color: var(--text); }
+/* Text screens (about, contact): headline, normal text, and a foot line; the block is centred vertically */
+.screen[data-screen="about"], .screen[data-screen="contact"] { justify-content: flex-start; padding-top: 1rem; }
+.page { display: flex; flex-direction: column; min-height: 100%; }
+.page-main { flex: 1; display: flex; align-items: center; }
+.page-slot { width: 100%; }
+.page-slot--figure { display: grid; grid-template-columns: minmax(0, 55fr) minmax(0, 45fr); column-gap: 2rem; align-items: center; } /* about: text left, figure right */
+.page-col { display: flex; flex-direction: column; gap: 1.5rem; }
+.headline { font-weight: 300; font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.2; max-width: 24ch; color: var(--text); }
+.page-foot { padding-top: 1rem; padding-bottom: 0.5rem; min-height: calc(1rem + 1.25 * 0.8125rem + 0.5rem); }
 .label { font-size: 0.875rem; color: var(--text-dim); margin-bottom: -0.75rem; }
 .edu { list-style: none; margin: 0; padding: 0; max-width: 28rem; }
 .edu li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.75rem 0; border-top: 1px solid var(--line); font-size: 1rem; }
@@ -188,18 +190,18 @@ a { color: inherit; text-decoration: none; }
 .edu-years { color: var(--text-dim); white-space: nowrap; }
 .figure-box { position: relative; justify-self: center; }
 .figure { position: absolute; inset: 0; width: 100%; height: 100%; }
-.credit { margin-top: 1rem; padding-bottom: 0.5rem; font-size: 0.8125rem; color: var(--text-dim); }
+.credit { margin: 0; font-size: 0.8125rem; line-height: 1.25; color: var(--text-dim); }
 .credit a { color: var(--text-dim); text-decoration: underline; text-underline-offset: 0.2em; }
 .credit a:hover { color: var(--text); }
 .ext { width: 0.75em; height: 0.75em; margin-left: 0.35em; }
 @media (max-width: 767px) {
-  .about-main { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 1.5rem; }
+  .page-main { align-items: flex-start; }
+  .page-slot--figure { display: flex; flex-direction: column; align-items: flex-start; gap: 1.5rem; }
   .figure-box { order: -1; } /* figure above the text */
 }
 
-/* Contact */
-.screen[data-screen="contact"] { justify-content: center; }
-.contact-intro { font-size: 1rem; color: var(--text); padding-bottom: 2rem; }
+/* Contact: the list under the normal text, 2rem below it */
+.contact-list { margin-top: 0.5rem; }
 a.vrow { text-decoration: none; }
 
 .help { text-align: center; font-weight: 600; font-size: 0.8125rem; color: var(--text-dim); padding: 0.75rem 0; }

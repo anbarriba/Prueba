@@ -94,7 +94,8 @@ window.CONTENT = {
     ]
   },
   contact: {
-    intro: "Open to new projects, a good chat, or a taco recommendation", // short phrase above the list (shown in lowercase)
+    headline: "let's talk.", // provisional headline: Ángel will rewrite it
+    intro: "Open to new projects, a good chat, or a taco recommendation", // normal text under the headline, above the list
     options: [
       { id: "email", label: "angelbarreiroribadulla@gmail.com", href: "mailto:angelbarreiroribadulla@gmail.com" }, // the row shows the address itself
       { id: "linkedin", label: "linkedin", href: "https://www.linkedin.com/in/angelbarreiro", newTab: true }

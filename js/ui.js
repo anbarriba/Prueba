@@ -74,5 +74,28 @@
     };
   }
 
-  window.Ui = { el: el, svg: svg, arrowIcon: arrowIcon, externalArrow: externalArrow, checkbox: checkbox, createList: createList };
+  // Common template of the text screens (about, contact): a big headline, normal text under it, and room for a
+  // foot line. Returns the pieces so each screen can add its own content: `col` holds the headline (add the text
+  // after it), `slot` is the block that is centred vertically, `foot` the line at the bottom.
+  function textPage(container, headline) {
+    var root = el("div", { "class": "page" }), main = el("div", { "class": "page-main" });
+    var slot = el("div", { "class": "page-slot" }), col = el("div", { "class": "page-col" }), foot = el("div", { "class": "page-foot" });
+    col.appendChild(el("p", { "class": "headline" }, headline));
+    slot.appendChild(col); main.appendChild(slot); root.appendChild(main); root.appendChild(foot);
+    container.appendChild(root);
+    return { root: root, main: main, slot: slot, col: col, foot: foot };
+  }
+
+  // Height of a headline plus paragraphs laid out in a column of `width` px, using the real styles (measured off screen).
+  function colHeight(width, headline, paragraphs) {
+    var probe = el("div", { "class": "page-col", "aria-hidden": "true", style: "position:absolute;left:0;top:0;visibility:hidden;pointer-events:none;width:" + width + "px" });
+    probe.appendChild(el("p", { "class": "headline" }, headline));
+    paragraphs.forEach(function (t) { probe.appendChild(el("p", { "class": "para" }, t)); });
+    document.body.appendChild(probe);
+    var h = probe.getBoundingClientRect().height;
+    document.body.removeChild(probe);
+    return h;
+  }
+
+  window.Ui = { el: el, svg: svg, textPage: textPage, colHeight: colHeight, arrowIcon: arrowIcon, externalArrow: externalArrow, checkbox: checkbox, createList: createList };
 })();

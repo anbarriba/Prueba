@@ -231,12 +231,24 @@
       return;
     }
     if (route.name === "contact") {
-      var wrap = el("div", { "class": "contact" });
-      wrap.appendChild(el("p", { "class": "contact-intro" }, C.contact.intro));
+      var page = window.Ui.textPage(screenEl, C.contact.headline);
+      page.col.appendChild(el("p", { "class": "para" }, C.contact.intro));
       var listBox = el("div", { "class": "contact-list" });
-      wrap.appendChild(listBox);
-      screenEl.appendChild(wrap);
-      list = window.Ui.createList(listBox, route.links, "contact");
+      page.col.appendChild(listBox);
+      var contactList = window.Ui.createList(listBox, route.links, "contact");
+      // the block is as tall as About's text block, so the headline starts at the same height on both screens
+      var narrowScreen = window.matchMedia("(max-width: 767px)");
+      var align = function () {
+        if (narrowScreen.matches) { page.slot.style.minHeight = ""; return; }
+        var rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+        var colWidth = (page.main.clientWidth - 2 * rem) * 0.55; // About's text column: 55 % of the width minus the 2rem gap
+        page.slot.style.minHeight = window.Ui.colHeight(colWidth, C.about.statement, C.about.bio) + "px";
+      };
+      var ro = window.ResizeObserver ? new ResizeObserver(align) : null;
+      if (ro) ro.observe(page.main);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(align);
+      align();
+      list = { onKey: contactList.onKey, destroy: function () { if (ro) ro.disconnect(); contactList.destroy(); } };
     }
   }
 

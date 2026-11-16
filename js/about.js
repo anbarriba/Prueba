@@ -4,16 +4,14 @@
   var el = window.Ui.el;
 
   function create(container, about) {
-    var root = el("div", { "class": "about" });
-
-    var text = el("div", { "class": "about-text" });
-    text.appendChild(el("p", { "class": "about-statement" }, about.statement));
+    var page = window.Ui.textPage(container, about.statement);
+    var text = page.col, root = page.root;
     about.bio.forEach(function (paragraph) { text.appendChild(el("p", { "class": "para" }, paragraph)); });
 
+    // text on the left, figure on the right
     var figureBox = el("div", { "class": "figure-box" });
-    var main = el("div", { "class": "about-main" }); // text on the left, figure on the right
-    main.appendChild(text); main.appendChild(figureBox);
-    root.appendChild(main);
+    page.slot.classList.add("page-slot--figure");
+    page.slot.appendChild(figureBox);
 
     // credit line: the whole line is the link, with the external arrow; plain text while there is no link
     var credit = el("p", { "class": "credit" });
@@ -25,8 +23,7 @@
     } else {
       credit.textContent = about.credit.text;
     }
-    root.appendChild(credit);
-    container.appendChild(root);
+    page.foot.appendChild(credit);
 
     // the figure is as tall as the text block (title to end of bio); on small screens it is a fixed, smaller size above the text
     var narrow = window.matchMedia("(max-width: 767px)");
