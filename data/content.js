@@ -26,14 +26,9 @@ window.CONTENT = {
   about: {
     statement: "pending: your presentation sentence",
     bio: "pending: a short bio in two or three lines about who you are and how you work.",
-    education: [
-      { title: "pending degree", school: "pending school", years: "pending" },
-      { title: "pending course", school: "pending school", years: "pending" }
-    ],
     credit: {
-      text: "design inspired by the menus of colin mcrae rally 2.0, a rally game from 2000.",
-      linkLabel: "about the game",
-      href: "" // TODO: link to a public reference for the game
+      text: "design inspired by the menus of colin mcrae rally 2.0",
+      href: "https://www.youtube.com/shorts/5o7MeaCYJ0E" // the whole line is the link; empty = plain text
     }
   },
   career: {

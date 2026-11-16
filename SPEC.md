@@ -4,7 +4,7 @@ Web personal de Ángel Barreiro, product designer. Estética inspirada en los me
 
 Idioma de la web: **inglés** (un selector de idioma queda para una versión futura).
 
-> Importante: es un homenaje de estilo. No usar logos, nombres, imágenes, sonidos ni otros recursos del juego original. Todo el contenido gráfico se genera en código (SVG/Canvas) o son imágenes del propio Ángel. Única excepción: la línea de créditos de About, que nombra el juego como texto plano con un enlace (ver 4.2 y `DESIGN.md` §9).
+> Importante: es un homenaje de estilo. No usar logos, nombres, imágenes, sonidos ni otros recursos del juego original. Todo el contenido gráfico se genera en código (SVG/Canvas) o son imágenes del propio Ángel. Única excepción: la línea de créditos de About, que nombra el juego en un enlace de texto (ver 4.2 y `DESIGN.md` §9).
 
 ---
 
@@ -60,9 +60,8 @@ Todo lo visual (color, tipografía, medidas, animaciones, móvil y límites) est
 - Columna izquierda, de arriba abajo:
   - **Frase de presentación**, al estilo de un portfolio minimalista (una o dos líneas, grande).
   - **Bio breve** (un párrafo).
-  - **Formación**: lista de filas `título · centro · años` (contenido pendiente).
 - Columna derecha: **figura de puntos** (silueta de persona, generada en código), a la manera de la pantalla de jugador del juego. Aparece punto a punto.
-- Al final, **línea de créditos**: indica que el diseño se inspira en Colin McRae Rally 2.0 y enlaza a una referencia para quien no conozca el juego. El enlace está pendiente (hueco visible, sin href real).
+- Al final, **línea de créditos**: `design inspired by the menus of colin mcrae rally 2.0`, toda ella un enlace subrayado con una flecha ↗ (como los enlaces externos de otros portfolios) a un vídeo de referencia en YouTube, para quien no conozca el juego. Se abre en pestaña nueva.
 - Esc → `#home`. No hay carrusel en esta pantalla.
 
 ### 4.3 Trayectoria (`#career`) — selección de tramo
@@ -152,8 +151,8 @@ Textos de referencia (del portfolio actual, angelbarreiro.framer.website):
 - [ ] Lista definitiva de secciones del case study y su contenido.
 - [ ] Imágenes: pantalla principal y detalles de cada proyecto.
 - [ ] Frase de presentación de inicio (vacía, no se muestra) y frase breve de contacto (hay texto provisional).
-- [ ] About: frase de presentación, bio y formación.
-- [ ] About: enlace de la línea de créditos a la referencia del juego.
+- [ ] About: frase de presentación y bio.
+- [x] About: enlace de la línea de créditos.
 - [ ] Ficha de cada empresa: descripción corta, resultado destacado y cargos si hubo más de uno.
 
 ## Fuera de esta versión

@@ -23,6 +23,13 @@
     return s;
   }
 
+  // Thin arrow pointing up and to the right, for links that open elsewhere.
+  function externalArrow() {
+    var s = svg("svg", { "class": "ext", viewBox: "0 0 12 12", "aria-hidden": "true" });
+    s.appendChild(svg("path", { d: "M2 10 L10 2 M4 2 H10 V8", fill: "none", stroke: "currentColor", "stroke-width": "1" }));
+    return s;
+  }
+
   // Square box; with a check mark once `checked`.
   function checkbox(checked) {
     var s = svg("svg", { "class": "check", viewBox: "0 0 12 12", "aria-hidden": "true" });
@@ -62,5 +69,5 @@
     };
   }
 
-  window.Ui = { el: el, svg: svg, arrowIcon: arrowIcon, checkbox: checkbox, createList: createList };
+  window.Ui = { el: el, svg: svg, arrowIcon: arrowIcon, externalArrow: externalArrow, checkbox: checkbox, createList: createList };
 })();
